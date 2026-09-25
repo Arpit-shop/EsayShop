@@ -1,0 +1,7055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Easy Shop | Shop Smarter</title>
+
+<meta name="description" content="Easy Shop - Discover selected products, offers and marketplace links.">
+<meta name="theme-color" content="#2874f0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:"Inter",Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+
+    --platform:#2874f0;
+    --platform2:#1557b0;
+    --platform-icon:#2874f0;
+    --platform-soft:rgba(40,116,240,.14);
+
+    --bg:#070b14;
+    --bg2:#0b1120;
+    --card:#101827;
+    --card2:#121d2f;
+    --text:#ffffff;
+    --muted:#9aa7ba;
+    --border:rgba(255,255,255,.08);
+    --success:#19c37d;
+    --danger:#ff5b6e;
+
+    --max:1400px;
+}
+
+body[data-platform="flipkart"]{
+    --platform:#2874f0;
+    --platform2:#1557b0;
+    --platform-icon:#2874f0;
+    --platform-soft:rgba(40,116,240,.15);
+}
+
+body.modal-open{
+    overflow:hidden;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button,
+input{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+button,
+a,
+select{
+    -webkit-tap-highlight-color:transparent;
+}
+
+.game-click{
+    animation:gameClickPulse .45s ease;
+}
+
+@keyframes gameClickPulse{
+    0%{
+        filter:brightness(1);
+        box-shadow:0 0 0 rgba(25,195,125,0);
+    }
+    45%{
+        filter:brightness(1.35);
+        box-shadow:0 0 0 3px var(--platform-soft),0 0 24px var(--platform);
+    }
+    100%{
+        filter:brightness(1);
+        box-shadow:0 0 0 rgba(25,195,125,0);
+    }
+}
+
+button:hover,
+a:not(.logo):hover,
+select:hover{
+    filter:brightness(1.18) saturate(1.2);
+    box-shadow:
+        0 0 0 2px var(--platform-soft),
+        0 0 18px var(--platform);
+    text-shadow:0 0 8px rgba(255,255,255,.65);
+}
+
+.nav-links > a:hover,
+.nav-action:hover,
+.login-btn:hover,
+.category-btn:hover,
+.platform-tab:hover,
+.hero-btn:hover,
+.add-cart-btn:hover,
+.check-price-btn:hover{
+    transform:translateY(-3px) scale(1.02);
+}
+
+img{
+    display:block;
+    max-width:100%;
+}
+
+.container{
+    width:min(100% - 32px,var(--max));
+    margin:auto;
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+.navbar{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:rgba(5,8,16,.94);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid var(--border);
+}
+
+.nav-inner{
+    height:76px;
+    display:flex;
+    align-items:center;
+    gap:50px;
+}
+
+
+/* Logo */
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-shrink:0;
+}
+
+.logo-mark{
+    width:42px;
+    height:42px;
+    border-radius:13px;
+    display:grid;
+    place-items:center;
+    font-weight:900;
+    font-size:19px;
+    color:white;
+    background:linear-gradient(135deg,var(--platform),var(--platform2));
+    box-shadow:0 8px 30px var(--platform-soft);
+    transition:.3s;
+}
+
+.logo:hover .logo-mark{
+    transform:rotate(-7deg) scale(1.05);
+}
+
+.logo-text{
+    font-size:21px;
+    font-weight:900;
+    letter-spacing:-.7px;
+}
+
+.logo-text span{
+    color:var(--platform);
+}
+
+
+/* Navigation */
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    margin-left:5px;
+}
+
+.nav-links > a,
+.platform-menu > button{
+    border:0;
+    background:transparent;
+    color:#dce4f0;
+    padding:10px 13px;
+    border-radius:9px;
+    font-size:14px;
+    font-weight:700;
+    transition:.25s;
+}
+
+.nav-links > a:hover,
+.platform-menu > button:hover{
+    background:rgba(255,255,255,.06);
+    color:#fff;
+}
+
+
+/* Platform dropdown */
+
+.platform-menu{
+    position:relative;
+}
+
+.platform-menu > button{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.chevron{
+    font-size:11px;
+    transition:.25s;
+}
+
+.platform-menu:hover .chevron{
+    transform:rotate(180deg);
+}
+
+.platform-dropdown{
+    position:absolute;
+    top:calc(100% + 10px);
+    left:0;
+    width:220px;
+    background:#0d1422;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:8px;
+    box-shadow:0 25px 70px rgba(0,0,0,.45);
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(-7px);
+    transition:.25s;
+}
+
+.platform-menu:hover .platform-dropdown{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0);
+}
+
+.platform-dropdown button{
+    width:100%;
+    border:0;
+    background:transparent;
+    color:#dbe4f2;
+    text-align:left;
+    padding:12px;
+    border-radius:9px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    transition:.2s;
+}
+
+.platform-dropdown button:hover{
+    background:rgba(255,255,255,.07);
+    transform:translateX(3px);
+}
+
+.platform-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+}
+
+.dot-flipkart{
+    background:#2874f0;
+}
+
+/* Search */
+
+.search-box{
+    flex:1;
+    max-width:410px;
+    margin-left:auto;
+    position:relative;
+}
+
+.search-box input{
+    width:100%;
+    height:43px;
+    border:1px solid var(--border);
+    outline:none;
+    background:#0e1625;
+    color:#fff;
+    border-radius:11px;
+    padding:0 46px 0 15px;
+    font-size:13px;
+    transition:.25s;
+}
+
+.search-box input::placeholder{
+    color:#758196;
+}
+
+.search-box input:focus{
+    border-color:var(--platform);
+    box-shadow:0 0 0 3px var(--platform-soft);
+}
+
+.search-icon{
+    position:absolute;
+    right:14px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#8b98ab;
+    pointer-events:none;
+}
+
+
+/* Nav actions */
+
+.nav-actions{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.nav-action{
+    position:relative;
+    width:42px;
+    height:42px;
+    border:1px solid var(--border);
+    background:#0e1625;
+    color:#fff;
+    border-radius:11px;
+    display:grid;
+    place-items:center;
+    transition:.25s;
+}
+
+.nav-action:hover{
+    background:var(--platform);
+    transform:translateY(-2px);
+}
+
+.cart-count{
+    position:absolute;
+    right:-5px;
+    top:-6px;
+    min-width:19px;
+    height:19px;
+    padding:0 5px;
+    border-radius:20px;
+    background:#ff405d;
+    color:white;
+    font-size:10px;
+    font-weight:900;
+    display:grid;
+    place-items:center;
+    border:2px solid #050810;
+}
+
+.login-btn{
+    border:1px solid var(--platform);
+    background:var(--platform-soft);
+    color:#fff;
+    min-height:42px;
+    padding:0 16px;
+    border-radius:11px;
+    font-weight:800;
+    transition:.25s;
+}
+
+.login-btn:hover{
+    background:var(--platform);
+    transform:translateY(-2px);
+}
+
+
+.mobile-menu-btn{
+    display:none;
+    width:42px;
+    height:42px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#0e1625;
+    color:#fff;
+    font-size:19px;
+}
+
+
+/* =========================================================
+   HERO SLIDER
+========================================================= */
+
+.hero{
+    padding:20px 0 0;
+}
+
+.slider{
+    position:relative;
+    width:100%;
+    height:460px;
+    border-radius:25px;
+    overflow:hidden;
+    border:1px solid var(--border);
+    background:#101827;
+    box-shadow:0 30px 90px rgba(0,0,0,.3);
+}
+
+.slide{
+    position:absolute;
+    inset:0;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .7s ease;
+}
+
+.slide.active{
+    opacity:1;
+    visibility:visible;
+}
+
+.slide img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter:brightness(.5) saturate(1.05);
+}
+
+.slide::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(90deg,rgba(0,0,0,.85),rgba(0,0,0,.35),rgba(0,0,0,.15)),
+        linear-gradient(0deg,rgba(0,0,0,.65),transparent 55%);
+}
+
+.slide-content{
+    position:absolute;
+    z-index:2;
+    left:7%;
+    top:50%;
+    transform:translateY(-50%);
+    max-width:650px;
+}
+
+.slide-label{
+    display:inline-flex;
+    padding:7px 11px;
+    border-radius:8px;
+    background:var(--platform-soft);
+    border:1px solid var(--platform);
+    color:#fff;
+    font-size:11px;
+    font-weight:900;
+    letter-spacing:1.2px;
+    margin-bottom:15px;
+}
+
+.slide h1{
+    font-size:clamp(35px,5vw,70px);
+    line-height:.98;
+    letter-spacing:-3px;
+    margin-bottom:17px;
+}
+
+.slide h1 span{
+    color:var(--platform-icon);
+}
+
+.slide p{
+    color:#d6deeb;
+    line-height:1.7;
+    max-width:540px;
+    font-size:15px;
+}
+
+.hero-btns{
+    margin-top:25px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.hero-btn{
+    border:0;
+    min-height:46px;
+    padding:0 18px;
+    border-radius:11px;
+    font-weight:900;
+    transition:.25s;
+}
+
+.hero-primary{
+    background:linear-gradient(135deg,var(--platform),var(--platform2));
+    color:#fff;
+    box-shadow:0 10px 30px var(--platform-soft);
+}
+
+.hero-secondary{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.14);
+    color:#fff;
+}
+
+.hero-btn:hover{
+    transform:translateY(-3px);
+}
+
+.slider-arrow{
+    position:absolute;
+    z-index:5;
+    top:50%;
+    transform:translateY(-50%);
+    width:44px;
+    height:44px;
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:50%;
+    background:rgba(0,0,0,.35);
+    color:#fff;
+    display:grid;
+    place-items:center;
+    font-size:18px;
+    transition:.25s;
+}
+
+.slider-arrow:hover{
+    background:var(--platform);
+}
+
+.slider-prev{
+    left:18px;
+}
+
+.slider-next{
+    right:18px;
+}
+
+.slider-dots{
+    position:absolute;
+    z-index:5;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:7px;
+}
+
+.slider-dot{
+    width:8px;
+    height:8px;
+    border:0;
+    border-radius:20px;
+    background:rgba(255,255,255,.45);
+    transition:.3s;
+}
+
+.slider-dot.active{
+    width:27px;
+    background:var(--platform);
+}
+
+
+/* =========================================================
+   PLATFORM TABS
+========================================================= */
+
+.platform-section{
+    padding:30px 0 10px;
+}
+
+.section-heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+    gap:20px;
+    margin-bottom:17px;
+}
+
+.section-heading h2{
+    font-size:25px;
+    letter-spacing:-1px;
+}
+
+.section-heading p{
+    margin-top:6px;
+    color:var(--muted);
+    font-size:13px;
+}
+
+.platform-tabs{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+
+.platform-tab{
+    border:1px solid var(--border);
+    background:var(--card);
+    color:#fff;
+    min-height:70px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    gap:13px;
+    padding:12px 16px;
+    transition:.3s;
+    text-align:left;
+}
+
+.platform-tab:hover{
+    transform:translateY(-3px);
+    border-color:rgba(255,255,255,.18);
+}
+
+.platform-tab.active{
+    border-color:var(--platform);
+    background:linear-gradient(135deg,var(--platform-soft),rgba(255,255,255,.025));
+    box-shadow:0 10px 35px var(--platform-soft);
+}
+
+.platform-tab-icon{
+    width:43px;
+    height:43px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    background:rgba(255,255,255,.07);
+    font-weight:900;
+    font-size:14px;
+}
+
+.platform-tab.flipkart .platform-tab-icon{
+    color:#2874f0;
+}
+
+.platform-tab strong{
+    display:block;
+    font-size:14px;
+}
+
+.platform-tab small{
+    color:var(--muted);
+    font-size:11px;
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.features{
+    padding:25px 0 10px;
+}
+
+.feature-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+.feature-card{
+    padding:20px;
+    background:linear-gradient(145deg,var(--card),var(--card2));
+    border:1px solid var(--border);
+    border-radius:16px;
+    transition:.3s;
+}
+
+.feature-card:hover{
+    transform:translateY(-5px);
+    border-color:var(--platform);
+    box-shadow:0 15px 45px var(--platform-soft);
+}
+
+.feature-icon{
+    font-size:23px;
+    margin-bottom:11px;
+}
+
+.feature-card h3{
+    font-size:14px;
+    margin-bottom:6px;
+}
+
+.feature-card p{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.6;
+}
+
+
+/* =========================================================
+   PRODUCTS
+========================================================= */
+
+.products-section{
+    padding:55px 0 30px;
+}
+
+.product-toolbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.result-info{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.result-info strong{
+    color:#fff;
+}
+
+.sort-select{
+    background:#101827;
+    color:#fff;
+    border:1px solid var(--border);
+    border-radius:9px;
+    padding:10px 12px;
+    outline:none;
+}
+
+.category-list{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:22px;
+}
+
+.category-btn{
+    border:1px solid var(--border);
+    background:#0e1625;
+    color:#bac6d8;
+    padding:9px 13px;
+    border-radius:9px;
+    font-size:12px;
+    font-weight:800;
+    transition:.25s;
+}
+
+.category-btn:hover,
+.category-btn.active{
+    background:var(--platform);
+    border-color:var(--platform);
+    color:#fff;
+}
+
+.product-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+}
+
+
+.product-card{
+    position:relative;
+    background:linear-gradient(145deg,var(--card),var(--card2));
+    border:1px solid var(--border);
+    border-radius:17px;
+    overflow:hidden;
+    transition:.3s;
+}
+
+.product-card:hover{
+    transform:translateY(-7px);
+    border-color:var(--platform);
+    box-shadow:0 18px 55px var(--platform-soft);
+}
+
+.product-image{
+    position:relative;
+    height:230px;
+    overflow:hidden;
+    background:#0b111d;
+}
+
+.product-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:.5s;
+}
+
+.product-card:hover .product-image img{
+    transform:scale(1.07);
+}
+
+.discount-badge{
+    position:absolute;
+    left:12px;
+    top:12px;
+    background:#19c37d;
+    color:#04150e;
+    padding:6px 9px;
+    border-radius:7px;
+    font-size:10px;
+    font-weight:900;
+    z-index:3;
+}
+
+.source-badge{
+    position:absolute;
+    right:12px;
+    top:12px;
+    padding:6px 9px;
+    border-radius:7px;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:.5px;
+    background:rgba(5,8,16,.85);
+    backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,.13);
+    z-index:3;
+}
+
+.source-badge.flipkart{
+    color:#6ea3ff;
+}
+
+.wishlist-btn{
+    position:absolute;
+    right:12px;
+    bottom:12px;
+    width:34px;
+    height:34px;
+    border-radius:9px;
+    border:1px solid rgba(255,255,255,.12);
+    background:rgba(5,8,16,.78);
+    color:#fff;
+    z-index:4;
+    transition:.25s;
+}
+
+.wishlist-btn:hover{
+    background:#ff405d;
+}
+
+.product-info{
+    padding:16px;
+}
+
+.product-name{
+    font-size:14px;
+    line-height:1.45;
+    min-height:41px;
+    margin-bottom:9px;
+    font-weight:800;
+}
+
+.rating-row{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-bottom:12px;
+}
+
+.rating{
+    background:#0f7c4f;
+    color:#fff;
+    border-radius:6px;
+    padding:4px 7px;
+    font-size:10px;
+    font-weight:900;
+}
+
+.rating-stars{
+    color:#ffc83d;
+    font-size:11px;
+    letter-spacing:1px;
+}
+
+.review-count{
+    color:#7f8ca1;
+    font-size:10px;
+}
+
+.price-row{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:6px;
+}
+
+.new-price{
+    font-size:20px;
+    font-weight:900;
+}
+
+.old-price{
+    color:#68758a;
+    font-size:12px;
+    text-decoration:line-through;
+}
+
+.discount-text{
+    color:#19c37d;
+    font-size:11px;
+    font-weight:900;
+}
+
+.delivery{
+    color:#8e9caf;
+    font-size:10px;
+    margin:8px 0 13px;
+}
+
+.card-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+}
+
+.add-cart-btn,
+.check-price-btn{
+    min-height:39px;
+    border-radius:9px;
+    font-size:11px;
+    font-weight:900;
+    transition:.25s;
+}
+
+.add-cart-btn{
+    border:1px solid var(--border);
+    background:#0c1421;
+    color:#fff;
+}
+
+.add-cart-btn:hover{
+    background:rgba(255,255,255,.08);
+    border-color:rgba(255,255,255,.2);
+}
+
+.check-price-btn{
+    border:1px solid rgba(255,255,255,.08);
+    color:#fff;
+    background:linear-gradient(135deg,var(--platform),var(--platform2));
+    box-shadow:0 7px 20px var(--platform-soft);
+}
+
+.check-price-btn:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.1);
+}
+
+.price-icon{
+    width:20px;
+    height:20px;
+    display:inline-grid;
+    place-items:center;
+    color:var(--platform-icon);
+    background:#fff;
+    border-radius:6px;
+    font-size:10px;
+    margin-right:5px;
+    vertical-align:middle;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty-state{
+    grid-column:1/-1;
+    text-align:center;
+    padding:70px 20px;
+    background:var(--card);
+    border:1px dashed var(--border);
+    border-radius:18px;
+}
+
+.empty-state .empty-icon{
+    font-size:45px;
+    margin-bottom:12px;
+}
+
+.empty-state h3{
+    margin-bottom:6px;
+}
+
+.empty-state p{
+    color:var(--muted);
+    font-size:13px;
+}
+
+
+/* =========================================================
+   OFFERS
+========================================================= */
+
+.offers-section{
+    padding:45px 0 30px;
+}
+
+.offer-banner{
+    position:relative;
+    overflow:hidden;
+    min-height:190px;
+    border-radius:20px;
+    padding:30px;
+    background:
+        radial-gradient(circle at 80% 20%,var(--platform-soft),transparent 35%),
+        linear-gradient(135deg,#111a2b,#0b101c);
+    border:1px solid var(--border);
+}
+
+.offer-banner::before{
+    content:"";
+    position:absolute;
+    width:230px;
+    height:230px;
+    right:-70px;
+    top:-100px;
+    border-radius:50%;
+    border:1px solid var(--platform);
+    opacity:.25;
+}
+
+.offer-banner h2{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.offer-banner p{
+    color:var(--muted);
+    max-width:620px;
+    font-size:13px;
+    line-height:1.7;
+}
+
+.offer-tag{
+    display:inline-block;
+    margin-bottom:13px;
+    padding:6px 9px;
+    border-radius:7px;
+    background:var(--platform);
+    color:#fff;
+    font-size:10px;
+    font-weight:900;
+}
+
+.contact-section{
+    padding:30px 0 45px;
+}
+
+.contact-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:28px;
+}
+
+.contact-card p{
+    color:var(--muted);
+    line-height:1.7;
+    font-size:13px;
+}
+
+.contact-email{
+    display:inline-block;
+    margin-top:18px;
+    color:#6ea3ff;
+    font-weight:700;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+    margin-top:25px;
+    border-top:1px solid var(--border);
+    background:#050810;
+}
+
+.footer-main{
+    padding:45px 0 30px;
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr 1fr;
+    gap:35px;
+}
+
+.footer-brand p{
+    color:#78869a;
+    font-size:12px;
+    line-height:1.8;
+    max-width:340px;
+    margin-top:13px;
+}
+
+.footer-col h3{
+    font-size:13px;
+    margin-bottom:14px;
+}
+
+.footer-col a{
+    display:block;
+    color:#7e8ba0;
+    font-size:12px;
+    margin-bottom:9px;
+    transition:.2s;
+}
+
+.footer-col a:hover{
+    color:var(--platform);
+    transform:translateX(3px);
+}
+
+.disclaimer{
+    padding:15px 0;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    color:#69768a;
+    font-size:10px;
+    line-height:1.7;
+}
+
+.footer-bottom{
+    min-height:55px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    color:#657286;
+    font-size:11px;
+}
+
+
+/* =========================================================
+   CART DRAWER
+========================================================= */
+
+.overlay{
+    position:fixed;
+    inset:0;
+    z-index:1500;
+    background:rgba(0,0,0,.68);
+    opacity:0;
+    visibility:hidden;
+    transition:.25s;
+}
+
+.overlay.show{
+    opacity:1;
+    visibility:visible;
+}
+
+.cart-drawer{
+    position:fixed;
+    z-index:1600;
+    right:0;
+    top:0;
+    width:min(430px,100%);
+    height:100vh;
+    background:#0a101c;
+    border-left:1px solid var(--border);
+    transform:translateX(100%);
+    transition:.35s;
+    display:flex;
+    flex-direction:column;
+}
+
+.cart-drawer.open{
+    transform:translateX(0);
+}
+
+.cart-header{
+    min-height:72px;
+    padding:0 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:1px solid var(--border);
+}
+
+.cart-header h2{
+    font-size:18px;
+}
+
+.close-btn{
+    width:36px;
+    height:36px;
+    border:1px solid var(--border);
+    border-radius:9px;
+    background:#111a2a;
+    color:#fff;
+}
+
+.cart-items{
+    flex:1;
+    overflow:auto;
+    padding:15px;
+}
+
+.cart-empty{
+    text-align:center;
+    padding:70px 20px;
+    color:#7e8ba0;
+}
+
+.cart-empty-icon{
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.cart-item{
+    display:grid;
+    grid-template-columns:70px 1fr auto;
+    gap:11px;
+    padding:12px;
+    border:1px solid var(--border);
+    border-radius:13px;
+    margin-bottom:10px;
+    background:#0e1625;
+}
+
+.cart-item img{
+    width:70px;
+    height:70px;
+    object-fit:cover;
+    border-radius:9px;
+}
+
+.cart-item-name{
+    font-size:12px;
+    font-weight:800;
+    line-height:1.4;
+}
+
+.cart-item-platform{
+    color:var(--platform-icon);
+    font-size:9px;
+    font-weight:900;
+    margin-top:4px;
+}
+
+.cart-item-price{
+    font-size:13px;
+    font-weight:900;
+    margin-top:7px;
+}
+
+.remove-item{
+    width:28px;
+    height:28px;
+    border:0;
+    background:rgba(255,91,110,.1);
+    color:#ff7080;
+    border-radius:7px;
+}
+
+.cart-footer{
+    padding:17px;
+    border-top:1px solid var(--border);
+}
+
+.cart-total{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.cart-total span{
+    color:#9aa7ba;
+    font-size:13px;
+}
+
+.cart-total strong{
+    font-size:21px;
+}
+
+.cart-note{
+    color:#66748a;
+    font-size:10px;
+    line-height:1.6;
+    margin-bottom:13px;
+}
+
+.continue-btn{
+    width:100%;
+    min-height:44px;
+    border:0;
+    border-radius:10px;
+    color:#fff;
+    background:linear-gradient(135deg,var(--platform),var(--platform2));
+    font-weight:900;
+}
+
+
+/* =========================================================
+   LOGIN MODAL
+========================================================= */
+
+.modal-backdrop{
+    position:fixed;
+    inset:0;
+    z-index:2000;
+    background:rgba(0,0,0,.75);
+    display:none;
+    place-items:center;
+    padding:20px;
+}
+
+.modal-backdrop.show{
+    display:grid;
+}
+
+.login-modal{
+    width:min(410px,100%);
+    background:#0d1523;
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:26px;
+    box-shadow:0 30px 100px rgba(0,0,0,.55);
+    animation:modalIn .25s ease;
+}
+
+@keyframes modalIn{
+    from{
+        opacity:0;
+        transform:translateY(15px) scale(.97);
+    }
+
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.modal-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:20px;
+}
+
+.modal-top h2{
+    font-size:20px;
+}
+
+.modal-close{
+    width:35px;
+    height:35px;
+    border:1px solid var(--border);
+    border-radius:9px;
+    background:#111a2a;
+    color:#fff;
+}
+
+.login-modal p{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.6;
+    margin-bottom:17px;
+}
+
+.login-input{
+    width:100%;
+    height:44px;
+    margin-bottom:10px;
+    padding:0 13px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#080e18;
+    color:#fff;
+    outline:none;
+}
+
+.login-input:focus{
+    border-color:var(--platform);
+}
+
+.login-submit{
+    width:100%;
+    height:44px;
+    border:0;
+    border-radius:10px;
+    color:#fff;
+    background:linear-gradient(135deg,var(--platform),var(--platform2));
+    font-weight:900;
+    margin-top:4px;
+}
+
+.login-small{
+    text-align:center;
+    color:#69768a;
+    font-size:10px;
+    margin-top:13px;
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast{
+    position:fixed;
+    z-index:3000;
+    right:20px;
+    bottom:20px;
+    min-width:260px;
+    max-width:360px;
+    padding:13px 15px;
+    border-radius:11px;
+    background:#101a29;
+    border:1px solid var(--platform);
+    color:#fff;
+    box-shadow:0 15px 50px rgba(0,0,0,.4);
+    transform:translateY(25px);
+    opacity:0;
+    visibility:hidden;
+    transition:.3s;
+    font-size:12px;
+    font-weight:700;
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
+    visibility:visible;
+}
+
+
+/* =========================================================
+   MOBILE NAV
+========================================================= */
+
+.mobile-nav{
+    display:none;
+    position:absolute;
+    left:0;
+    right:0;
+    top:76px;
+    background:#070c15;
+    border-bottom:1px solid var(--border);
+    padding:10px 16px 16px;
+    box-shadow:0 20px 50px rgba(0,0,0,.4);
+}
+
+.mobile-nav.show{
+    display:block;
+}
+
+.mobile-nav a,
+.mobile-nav button{
+    width:100%;
+    display:block;
+    border:0;
+    background:transparent;
+    color:#dce4f0;
+    text-align:left;
+    padding:12px 10px;
+    border-radius:8px;
+    font-weight:700;
+    font-size:13px;
+}
+
+.mobile-nav a:hover,
+.mobile-nav button:hover{
+    background:rgba(255,255,255,.06);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1200px){
+
+    .product-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .feature-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .footer-main{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:980px){
+
+    .nav-links{
+        display:none;
+    }
+
+    .mobile-menu-btn{
+        display:block;
+    }
+
+    .search-box{
+        max-width:none;
+    }
+
+    .slider{
+        height:410px;
+    }
+
+    .product-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:700px){
+
+    .container{
+        width:min(100% - 20px,var(--max));
+    }
+
+    .nav-inner{
+        height:68px;
+        gap:8px;
+    }
+
+    .logo-text{
+        font-size:18px;
+    }
+
+    .logo-mark{
+        width:38px;
+        height:38px;
+    }
+
+    .search-box{
+        order:5;
+        position:absolute;
+        left:10px;
+        right:10px;
+        top:77px;
+        display:none;
+    }
+
+    .search-box.mobile-search{
+        display:block;
+    }
+
+    .nav-actions{
+        margin-left:auto;
+    }
+
+    .nav-action{
+        width:38px;
+        height:38px;
+    }
+
+    .login-btn{
+        min-height:38px;
+        padding:0 10px;
+        font-size:11px;
+    }
+
+    .mobile-menu-btn{
+        width:38px;
+        height:38px;
+    }
+
+    .hero{
+        padding-top:12px;
+    }
+
+    .slider{
+        height:390px;
+        border-radius:17px;
+    }
+
+    .slide-content{
+        left:22px;
+        right:22px;
+        top:50%;
+    }
+
+    .slide h1{
+        font-size:39px;
+        letter-spacing:-2px;
+    }
+
+    .slide p{
+        font-size:12px;
+    }
+
+    .slider-arrow{
+        width:37px;
+        height:37px;
+    }
+
+    .slider-prev{
+        left:10px;
+    }
+
+    .slider-next{
+        right:10px;
+    }
+
+    .platform-tabs{
+        grid-template-columns:1fr;
+    }
+
+    .feature-grid{
+        grid-template-columns:1fr 1fr;
+        gap:9px;
+    }
+
+    .feature-card{
+        padding:15px;
+    }
+
+    .feature-card h3{
+        font-size:12px;
+    }
+
+    .feature-card p{
+        font-size:10px;
+    }
+
+    .products-section{
+        padding-top:38px;
+    }
+
+    .section-heading{
+        display:block;
+    }
+
+    .product-toolbar{
+        display:block;
+    }
+
+    .sort-select{
+        margin-top:10px;
+        width:100%;
+    }
+
+    .product-grid{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .product-image{
+        height:175px;
+    }
+
+    .product-info{
+        padding:11px;
+    }
+
+    .product-name{
+        font-size:11px;
+        min-height:35px;
+    }
+
+    .new-price{
+        font-size:16px;
+    }
+
+    .old-price{
+        font-size:10px;
+    }
+
+    .discount-text{
+        font-size:9px;
+    }
+
+    .delivery{
+        font-size:9px;
+    }
+
+    .card-actions{
+        grid-template-columns:1fr;
+    }
+
+    .add-cart-btn,
+    .check-price-btn{
+        min-height:36px;
+        font-size:10px;
+    }
+
+    .offer-banner{
+        padding:22px;
+    }
+
+    .offer-banner h2{
+        font-size:23px;
+    }
+
+    .footer-main{
+        grid-template-columns:1fr 1fr;
+        gap:25px 15px;
+    }
+
+    .footer-brand{
+        grid-column:1/-1;
+    }
+
+    .footer-bottom{
+        display:block;
+        padding:15px 0;
+        line-height:1.7;
+    }
+}
+
+@media(max-width:430px){
+
+    .logo-text{
+        display:none;
+    }
+
+    .nav-inner{
+        justify-content:space-between;
+    }
+
+    .nav-actions{
+        gap:4px;
+    }
+
+    .login-btn{
+        display:none;
+    }
+
+    .product-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .product-image{
+        height:150px;
+    }
+
+    .source-badge{
+        font-size:8px;
+        padding:5px 6px;
+    }
+
+    .discount-badge{
+        font-size:8px;
+        padding:5px 6px;
+        left:7px;
+        top:7px;
+    }
+
+    .wishlist-btn{
+        right:7px;
+        bottom:7px;
+    }
+
+    .rating-row{
+        gap:4px;
+        flex-wrap:wrap;
+    }
+
+    .rating{
+        font-size:9px;
+    }
+
+    .rating-stars{
+        font-size:9px;
+    }
+
+    .review-count{
+        font-size:8px;
+    }
+}
+
+</style>
+</head>
+
+<body data-platform="flipkart">
+
+
+<header class="navbar">
+
+    <div class="container nav-inner">
+
+        <a href="#home" class="logo">
+
+            <div class="logo-mark">ES</div>
+
+            <div class="logo-text">
+                Easy<span>Shop</span>
+            </div>
+
+        </a>
+
+        <nav class="nav-links">
+
+            <a href="#home">Home</a>
+
+            <a href="#shop">Shop</a>
+
+            <a href="#shop" onclick="showOffers()">Offers</a>
+
+            <div class="platform-menu">
+
+            </div>
+
+            <a href="#contact" onclick="openContact(event)">Contact</a>
+
+        </nav>
+
+        <button
+            class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            onclick="toggleMobileMenu()"
+            aria-label="Menu">
+
+            ☰
+
+        </button>
+
+        <div class="search-box" id="searchBox">
+
+            <input
+                type="search"
+                id="searchInput"
+                placeholder="Search products from all marketplaces..."
+                autocomplete="off">
+
+            <span class="search-icon">⌕</span>
+
+        </div>
+
+        <div class="nav-actions">
+
+            <button
+                class="nav-action"
+                onclick="toggleMobileSearch()"
+                title="Search">
+
+                🔎
+
+            </button>
+
+            <button
+                class="nav-action"
+                onclick="openCart()"
+                title="Cart">
+
+                🛒
+
+                <span
+                    class="cart-count"
+                    id="cartCount">
+                    0
+                </span>
+
+            </button>
+
+            <button
+                class="login-btn"
+                onclick="openLogin()">
+
+                Login
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="mobile-nav"
+        id="mobileNav">
+
+        <a href="#home" onclick="closeMobileMenu()">
+            Home
+        </a>
+
+        <a href="#shop" onclick="closeMobileMenu()">
+            Shop
+        </a>
+
+        <a href="#shop" onclick="showOffers();closeMobileMenu()">
+            Offers
+        </a>
+
+        <a href="#contact" onclick="openContact(event);closeMobileMenu()">
+            Contact
+        </a>
+
+        <button onclick="openLogin();closeMobileMenu()">
+            👤 Login
+        </button>
+
+    </div>
+
+</header>
+
+
+<main id="home">
+
+<section class="hero">
+
+    <div class="container">
+
+        <div
+            class="slider"
+            id="slider">
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="platform-section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>Choose Marketplace</h2>
+
+                <p>
+                    Browse products from your preferred marketplace.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="platform-tabs">
+
+            <button
+                class="platform-tab flipkart active"
+                id="tab-flipkart"
+                onclick="switchPlatform('flipkart')">
+
+                <div class="platform-tab-icon">
+                    FK
+                </div>
+
+                <div>
+
+                    <strong>Flipkart</strong>
+
+                    <small>
+                        Explore selected products
+                    </small>
+
+                </div>
+
+            </button>
+
+
+           
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="features">
+
+    <div class="container">
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🚚
+                </div>
+
+                <h3>Easy Shopping</h3>
+
+                <p>
+                    Explore products easily from multiple marketplaces.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🔥
+                </div>
+
+                <h3>Hot Deals</h3>
+
+                <p>
+                    Find selected offers and discounted products.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🔗
+                </div>
+
+                <h3>Marketplace Links</h3>
+
+                <p>
+                    Visit products through partner marketplace links.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🛡️
+                </div>
+
+                <h3>Easy & Simple</h3>
+
+                <p>
+                    Clean interface designed for simple product discovery.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section
+    class="products-section"
+    id="shop">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2 id="productsTitle">
+                    Flipkart Products
+                </h2>
+
+                <p id="productsSubtitle">
+                    Explore selected products from this marketplace.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="category-list"
+            id="categoryList">
+
+            <button
+                class="category-btn active"
+                data-category="All">
+                All
+            </button>
+
+            <button
+                class="category-btn"
+                data-category="Electronics">
+                📱 Electronics
+            </button>
+
+            <button
+                class="category-btn"
+                data-category="Fashion">
+                👕 Fashion
+            </button>
+
+            <button
+                class="category-btn"
+                data-category="Beauty">
+                💄 Beauty
+            </button>
+
+            <button
+                class="category-btn"
+                data-category="Home">
+                🏠 Home
+            </button>
+
+            <button
+                class="category-btn"
+                data-category="Grocery">
+                🛒 Grocery
+            </button>
+
+        </div>
+
+
+        <div class="product-toolbar">
+
+            <div
+                class="result-info"
+                id="resultInfo">
+                Showing products
+            </div>
+
+            <select
+                class="sort-select"
+                id="sortSelect">
+
+                <option value="default">
+                    Sort: Recommended
+                </option>
+
+                <option value="low">
+                    Price: Low to High
+                </option>
+
+                <option value="high">
+                    Price: High to Low
+                </option>
+
+                <option value="rating">
+                    Rating
+                </option>
+
+                <option value="discount">
+                    Discount
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div
+            class="product-grid"
+            id="productGrid">
+        </div>
+
+    </div>
+
+</section>
+
+
+<section
+    class="offers-section"
+    id="offers">
+
+    <div class="container">
+
+        <div class="offer-banner">
+
+            <span class="offer-tag">
+                🔥 SELECTED OFFERS
+            </span>
+
+            <h2 id="offerTitle">
+                Flipkart Deals
+            </h2>
+
+            <p id="offerDescription">
+                Explore selected discounted products available through Easy Shop.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section
+    class="contact-section"
+    id="contact">
+
+    <div class="container">
+
+        <div class="contact-card">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <h2>Contact Easy Shop</h2>
+
+                    <p>
+                        For product, offer or partnership queries, reach out to us.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <a
+                class="contact-email"
+                href="mailto:arpit.talentmanagement@gmail.com">
+                talant.management@gmail.com
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+    <div class="container footer-main">
+
+        <div class="footer-brand">
+
+            <a
+                href="#home"
+                class="logo">
+
+                <div class="logo-mark">
+                    ES
+                </div>
+
+                <div class="logo-text">
+                    Easy<span>Shop</span>
+                </div>
+
+            </a>
+
+            <p>
+                Easy Shop helps users discover selected products and
+                marketplace links in one simple interface.
+            </p>
+
+        </div>
+
+
+        <div class="footer-col">
+
+            <h3>Quick Links</h3>
+
+            <a href="#home">Home</a>
+
+            <a href="#shop">Shop</a>
+
+            <a href="#offers">Offers</a>
+
+            <a href="#contact">Contact</a>
+
+        </div>
+
+
+        <div class="footer-col">
+
+            <h3>Platforms</h3>
+
+            <a
+                href="javascript:void(0)"
+                onclick="switchPlatform('flipkart')">
+                Flipkart
+            </a>
+
+        </div>
+
+
+        <div class="footer-col">
+
+            <h3>Information</h3>
+
+            <a href="#contact">Support</a>
+
+            <a href="#contact">Feedback</a>
+
+            <a href="#offers">Deals</a>
+
+            <a href="#shop">Products</a>
+
+        </div>
+
+    </div>
+
+
+    <div class="disclaimer">
+
+        <div class="container">
+
+            <strong>Disclaimer:</strong>
+
+            Easy Shop is an independent product discovery and affiliate
+            website. It is not the official website of Flipkart.
+             Product information, availability, prices and
+            discounts may change on the respective marketplace.
+            Please verify the final details on the marketplace before
+            making a purchase.
+
+        </div>
+
+    </div>
+
+
+    <div class="container footer-bottom">
+
+        <span>
+            © <span id="year"></span>
+            Easy Shop. All rights reserved.
+        </span>
+
+        <span>
+            Shop Smarter • Discover More
+        </span>
+
+    </div>
+
+</footer>
+
+
+<div
+    class="overlay"
+    id="cartOverlay"
+    onclick="closeCart()">
+</div>
+
+
+<aside
+    class="cart-drawer"
+    id="cartDrawer">
+
+    <div class="cart-header">
+
+        <h2>
+            🛒 Your Cart
+        </h2>
+
+        <button
+            class="close-btn"
+            onclick="closeCart()">
+            ✕
+        </button>
+
+    </div>
+
+
+    <div
+        class="cart-items"
+        id="cartItems">
+    </div>
+
+
+    <div class="cart-footer">
+
+        <div class="cart-total">
+
+            <span>
+                Total
+            </span>
+
+            <strong id="cartTotal">
+                ₹0
+            </strong>
+
+        </div>
+
+        <p class="cart-note">
+
+            Easy Shop does not process payments directly.
+            Use the marketplace product link to continue shopping.
+
+        </p>
+
+        <button
+            class="continue-btn"
+            onclick="continueShopping()">
+
+            Continue Shopping
+
+        </button>
+
+    </div>
+
+</aside>
+
+
+<div
+    class="modal-backdrop"
+    id="loginModal"
+    onclick="closeLoginOutside(event)">
+
+    <div class="login-modal">
+
+        <div class="modal-top">
+
+            <h2>
+                Welcome Back
+            </h2>
+
+            <button
+                class="modal-close"
+                onclick="closeLogin()">
+                ✕
+            </button>
+
+        </div>
+
+
+        <p>
+
+            Login interface for your Easy Shop website.
+            You can connect this form to your backend later.
+
+        </p>
+
+
+        <form
+            onsubmit="submitLogin(event)">
+
+            <input
+                class="login-input"
+                type="email"
+                placeholder="Email address"
+                required>
+
+            <input
+                class="login-input"
+                type="password"
+                placeholder="Password"
+                required>
+
+            <button
+                class="login-submit"
+                type="submit">
+
+                Login
+
+            </button>
+
+        </form>
+
+
+        <div class="login-small">
+
+            Demo interface — no real account is created by this front-end code.
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast">
+</div>
+
+
+<!-- =========================================================
+     HTML PRODUCT DATA
+     
+     PRODUCT EDITING YAHAN SE HOGA.
+     
+     JS KO FUTURE ME TOUCH KARNE KI ZAROORAT NAHI HAI.
+========================================================= -->
+
+<div id="htmlProducts" style="display:none;">
+
+    <!-- =========================
+         FLIPKART
+    ========================= -->
+
+    <div
+        class="product-data"
+        data-id="fk1"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="LAXYASH BLACK SHOES PREMIUM QUALITY SNEAKERS Casuals For Men Walking Shoes For Men (Black , 7)"
+        data-image="https://rukminim2.flixcart.com/image/612/612/xif0q/shoe/r/l/x/10-black-top-sportcasual-shoe-10-laxyash-black-resized-original-imahfsgmamuaxvz9.jpeg?q=70"
+        data-price="478"
+        data-old-price="2,999"
+        data-discount="84"
+        data-rating="3.7"
+        data-reviews="3110"
+        data-affiliate="https://fktr.in/ZrMBZ4d">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk2"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="ATOM Spring Edge Alpha 1 Sneakers For Men (White , 7)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/shoe/q/i/f/-resized-original-imaheyc2bqstzaqe.jpeg?q=90"
+        data-price="1156"
+        data-old-price="3,250"
+        data-discount="64"
+        data-rating="4.3"
+        data-reviews="3634"
+        data-affiliate="https://fktr.in/I7ivIYY">
+    </div>
+<div
+        class="product-data"
+        data-id="fk26"
+        data-platform="flipkart"
+        data-category="Beauty"
+        data-delivery="Free Delivery"
+        data-name="THE MAN COMPANY Glow Pro Instant Glow Face Moisturizer for Men"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/moisturizer-cream/n/l/x/50-glow-pro-instant-glow-face-moisturizer-for-men-non-sticky-original-imahhhrzgudtqng6.jpeg?q=90"
+        data-price="223"
+        data-old-price="349"
+        data-discount="36"
+        data-rating="4.4"
+        data-reviews="775"
+        data-affiliate="https://fktr.in/fecXmAQ">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk3"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="ATOM Spring Edge Alpha 1 Sneakers For Men (Grey, Yellow ,"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/shoe/x/c/8/-original-imahfgbrwt53rfny.jpeg?q=90"
+        data-price="1489"
+        data-old-price="3,299"
+        data-discount="55"
+        data-rating="4.5"
+        data-reviews="2100"
+        data-affiliate="https://fktr.in/r542Ntg">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk4"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="CHHAAP Women Art Silk Kurta Palazzo Set"
+        data-image="https://rukminim2.flixcart.com/image/612/612/xif0q/ethnic-set/x/9/k/xl-rwks1355-inh-chhaap-original-imahqsffyzsxubmf.jpeg?q=70"
+        data-price="1367"
+        data-old-price="4099"
+        data-discount="66"
+        data-rating="4.4"
+        data-reviews="3600"
+        data-affiliate="https://fktr.in/Bq2M98x">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk30"
+        data-platform="flipkart"
+        data-category="Home"
+        data-delivery="Free Delivery"
+        data-name="Hocks Black Curve 5 L Induction Bottom Pressure Cooker (Hard Anodized)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/pressure-cooker/p/r/c/yes-1-black-curve-induction-base-hocks-original-imahmw5edz7m857g.jpeg?q=90"
+        data-price="1392"
+        data-old-price=2882"
+        data-discount="52"
+        data-rating="4.2"
+        data-reviews="10337"
+        data-affiliate="https://fktr.in/vnp2GZy">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk5"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Femvy Women Cotton Blend Kurta Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/dress/f/9/h/xxl-jc-218-2-jash-creation-original-imah77hdppwvcha7.jpeg?q=90"
+        data-price="445"
+        data-old-price="1999"
+        data-discount="78"
+        data-rating="3.3"
+        data-reviews="700"
+        data-affiliate="https://fktr.in/V1sHZSt">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk6"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Vision LED Monitor Light Bar"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/j/8/q/s-anarkali-set-012-koshiks-original-imahhb6fvhdjrhta.jpeg?q=90"
+        data-price="380"
+        data-old-price="1599"
+        data-discount="76"
+        data-rating="3.7"
+        data-reviews="207"
+        data-affiliate="https://fktr.in/CFi4gZp">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk7"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Axxitude Pack of 2 Men Printed Round Neck Polyester Black, White T-Shirt"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/t-shirt/g/h/z/l-fk-bsoxo-axxitude-resized-original-imahdestzys6zfsh.jpeg?q=90"
+        data-price="111"
+        data-old-price="899"
+        data-discount="88"
+        data-rating="3."
+        data-reviews="1302"
+        data-affiliate="https://fktr.in/ffOLNUa">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk8"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="wike denims Pack of 2 Men Printed Round Neck Polyester Grey, Black, White, Yellow T-Shirt"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/t-shirt/d/p/e/l-pack-of-4-men-printed-round-neck-polyester-black-white-t-shirt-original-imahkg7umnu2kwhf.jpeg?q=90"
+        data-price="420"
+        data-old-price="1599"
+        data-discount="74"
+        data-rating="4.3"
+        data-reviews="3800"
+        data-affiliate="https://fktr.in/5PL1cDj">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk9"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Chhaap Blue Organza Crepe Solid Ethnic Straight Kurta With Palazzo Pant Solid Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/i/d/l/xxl-hprwks1388-inh-house-of-pataudi-original-imahq7x5zbwpfyet.jpeg?q=90"
+        data-price="1797"
+        data-old-price="5149"
+        data-discount="65"
+        data-rating="4.5"
+        data-reviews="3100"
+        data-affiliate="https://fktr.in/49QnJDa">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk10"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="LIMBUDI CREATION Shrileela Designer Kurta Pant with Dupatta Set Self Design Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/l/8/k/l-srileela-limbudi-creation-resized-original-imahcvsxhwjfhaqx.jpeg?q=90"
+        data-price="847"
+        data-old-price="2999"
+        data-discount="72"
+        data-rating="3.9"
+        data-reviews="180"
+        data-affiliate="https://fktr.in/8QP0ogq">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk11"
+        data-platform="flipkart"
+        data-category="Mobiles"
+        data-delivery="Free Delivery"
+        data-name="vivo S2 (Regal Bronze, 128 GB) (8 GB RAM)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/mobile/s/w/r/-original-imahqyybghbygywa.jpeg?q=90"
+        data-price="39999"
+        data-old-price="66999"
+        data-discount="40"
+        data-rating="4.4"
+        data-reviews="425"
+        data-affiliate="https://fktr.in/1ol8sKF">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk12"
+        data-platform="flipkart"
+        data-category="Mobiles"
+        data-delivery="Free Delivery"
+        data-name="OPPO K14x 5G (Icy Blue, 64 GB) (4 GB RAM)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/mobile/q/l/7/-original-imahmkx5xdavr53c.jpeg?q=90"
+        data-price="18999"
+        data-old-price="19999"
+        data-discount="5"
+        data-rating="4.3"
+        data-reviews="7759"
+        data-affiliate="https://fktr.in/ObkV9KC">
+    </div>
+    
+    <div
+        class="product-data"
+        data-id="fk14"
+        data-platform="flipkart"
+        data-category="Mobiles"
+        data-delivery="Free Delivery"
+        data-name="Ai+ Nova 2 5G (Black, 64 GB) (4 GB RAM)"
+        data-image="https://rukminim2.flixcart.com/image/1528/1528/xif0q/mobile/l/k/p/-original-imahm9rwv2b8zqeq.jpeg?q=90"
+        data-price="13999"
+        data-old-price="18999"
+        data-discount="26"
+        data-rating="4.3"
+        data-reviews="6671"
+        data-affiliate="https://fktr.in/fhpmiVa">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk15"
+        data-platform="flipkart"
+        data-category="Electronics"
+        data-delivery="Free Delivery"
+        data-name="TRIGGR Kraken X1 with Battery Display, 40ms Latency, Quad Mic ENC, 40 Hr)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/headphone/p/0/g/-enriched-transparent-original-imahhfz3ugghy5dv.png?q=90"
+        data-price="679"
+        data-old-price="3999"
+        data-discount="83"
+        data-rating="4"
+        data-reviews="92125"
+        data-affiliate="https://fktr.in/VW4wLZM">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk16"
+        data-platform="flipkart"
+        data-category="Electronics"
+        data-delivery="Free Delivery"
+        data-name="Portronics Harmonics Twins S3 Smart TWS Bluetooth Earbuds"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/shopsy-headphone/p/l/y/bluetooth-yes-harmonics-twins-s3-portronics-original-imahf4tk4yksmzy6.jpeg?q=90"
+        data-price="729"
+        data-old-price="1999"
+        data-discount="64"
+        data-rating="4"
+        data-reviews="12117"
+        data-affiliate="https://fktr.in/ne4rNh0">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk17"
+        data-platform="flipkart"
+        data-category="Electronics"
+        data-delivery="Free Delivery"
+        data-name="Mivi Duopods B1 (Just Launched)45Hrs Playtime, AI ENC for HD Call"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/minutes_enrichment_original/-enriched-original-ACCH8Z35ZAJSR9CU_0.jpg?q=90"
+        data-price="749"
+        data-old-price="2999"
+        data-discount="75"
+        data-rating="4.1"
+        data-reviews="70594"
+        data-affiliate="https://fktr.in/68zwQvg">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk18"
+        data-platform="flipkart"
+        data-category="Electronics"
+        data-delivery="Free Delivery"
+        data-name="PTron Studio Urban 40dB ANC,Dual-Device Pairing,65Hrs Playtime,AI-ENC Calls"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/headphone/y/x/i/-original-imahz8wesnz4mt2m.jpeg?q=90"
+        data-price="1299"
+        data-old-price="5999"
+        data-discount="78"
+        data-rating="4"
+        data-reviews="2709"
+        data-affiliate="https://fktr.in/NKq7AEX">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk19"
+        data-platform="flipkart"
+        data-category="Beauty"
+        data-delivery="Free Delivery"
+        data-name="MUUCHSTAC Ocean for Men, Anti Acne & Pimple, Skin Brightening"
+        data-image="https://rukminim1.flixcart.com/image/1600/2140/xif0q/face-wash/c/d/a/300-ocean-for-men-anti-acne-pimple-skin-brightening-all-skin-enriched-transparent-original-imah5gh6hayymkfv.png?q=60"
+        data-price="291"
+        data-old-price="897"
+        data-discount="68"
+        data-rating="4.3"
+        data-reviews="7759"
+        data-affiliate="https://fktr.in/pJuQhmE">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk20"
+        data-platform="flipkart"
+        data-category="Beauty"
+        data-delivery="Free Delivery"
+        data-name="Herbal Essences Argan Oil of Morocco- For Hair Repair and No Frizz- No Paraben"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/conditioner/v/r/1/-original-imahqs2uhyzxq4hs.jpeg?q=90"
+        data-price="415"
+        data-old-price="296"
+        data-discount="29"
+        data-rating="4.4"
+        data-reviews="775"
+        data-affiliate="https://fktr.in/66rJD1J">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk21"
+        data-platform="flipkart"
+        data-category="Beauty"
+        data-delivery="Free Delivery"
+        data-name="FIAMA Shower Gel Lemongrass & Jojoba, Blackcurrant & Bearberry"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/body-wash/s/0/p/-enriched-transparent-original-imahakhyhvkk5dua.png?q=90"
+        data-price="300"
+        data-old-price="497"
+        data-discount="40"
+        data-rating="4.5"
+        data-reviews="44655"
+        data-affiliate="https://fktr.in/uhnYgOi">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk28"
+        data-platform="flipkart"
+        data-category="Home"
+        data-delivery="Free Delivery"
+        data-name="THE MAN COMPANY Glow Pro Instant Glow Face Moisturizer for Men"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/moisturizer-cream/n/l/x/50-glow-pro-instant-glow-face-moisturizer-for-men-non-sticky-original-imahhhrzgudtqng6.jpeg?q=90"
+        data-price="223"
+        data-old-price=349"
+        data-discount="36"
+        data-rating="4.4"
+        data-reviews="775"
+        data-affiliate="https://fktr.in/fecXmAQ">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk22"
+        data-platform="flipkart"
+        data-category="Beauty"
+        data-delivery="Free Delivery"
+        data-name="DENVER Black Code Cologne Talc Combo(Pack of 2) (2 x 100 g)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/talc/m/l/5/200-black-code-cologne-talc-combo-pack-of-2-2-denver-original-imahbyaggazgg3hs.jpeg?q=90"
+        data-price="157"
+        data-old-price="198"
+        data-discount="21"
+        data-rating="4.2"
+        data-reviews="3955"
+        data-affiliate="https://fktr.in/PobrjGK">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk23"
+        data-platform="flipkart"
+        data-category="Beauty"
+        data-delivery="Free Delivery"
+        data-name="Pond`s Sandal Radiance Talcum Powder Natural Sunscreen (300 g)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/talc/4/d/g/-original-imahnq7kvsttmwwz.jpeg?q=90"
+        data-price="306"
+        data-old-price="440"
+        data-discount="30"
+        data-rating="4.5"
+        data-reviews="15502"
+        data-affiliate="https://fktr.in/S7fN4Ez">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk24"
+        data-platform="flipkart"
+        data-category="Beauty"
+        data-delivery="Free Delivery"
+        data-name="CrazzyShopperz BB + CC Cream Combo | Weightless Long Wear & SPF 30 Makeup Base (2 g)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/skin-treatment/w/n/y/2-bb-cc-cream-combo-weightless-long-wear-spf-30-makeup-base-original-imahgxcuhbgv4gkv.jpeg?q=90"
+        data-price="160"
+        data-old-price="499"
+        data-discount="68"
+        data-rating="4"
+        data-reviews="494"
+        data-affiliate="https://fktr.in/pQ9C50o">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk25"
+        data-platform="flipkart"
+        data-category="Beauty"
+        data-delivery="Free Delivery"
+        data-name="MENZ Luxury Intense Hydration Face Cream For Gents (100 ml)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/moisturizer-cream/r/d/s/100-luxury-intense-hydration-face-cream-for-gents-menz-cream-original-imahehxpynjztxzf.jpeg?q=90"
+        data-price="139"
+        data-old-price="299"
+        data-discount="54"
+        data-rating="4"
+        data-reviews="775"
+        data-affiliate="https://fktr.in/obpI7HT">
+    </div>
+    
+    <div
+        class="product-data"
+        data-id="fk27"
+        data-platform="Flipkart"
+        data-category="Home"
+        data-delivery="Free Delivery"
+        data-name="Pigeon Popular Cooktop Glass Manual Gas Stove (2 Burners)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/gas-stove/e/l/v/-original-imagrzvn9ymmgsvj.jpeg?q=90"
+        data-price="1749"
+        data-old-price="2999"
+        data-discount="42"
+        data-rating="4.1"
+        data-reviews="247252"
+        data-affiliate="https://fktr.in/73gxTaK">
+    </div>
+
+<div
+        class="product-data"
+        data-id="fk28"
+        data-platform="flipkart"
+        data-category="Home"
+        data-delivery="Free Delivery"
+        data-name="THE MAN COMPANY Glow Pro Instant Glow Face Moisturizer for Men"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/moisturizer-cream/n/l/x/50-glow-pro-instant-glow-face-moisturizer-for-men-non-sticky-original-imahhhrzgudtqng6.jpeg?q=90"
+        data-price="223"
+        data-old-price="349"
+        data-discount="36"
+        data-rating="4.4"
+        data-reviews="775"
+        data-affiliate="https://fktr.in/fecXmAQ">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk29"
+        data-platform="flipkart"
+        data-category="Home"
+        data-delivery="Free Delivery"
+        data-name="Sigri-wala Surya Primecook Manual Cute Design Toughened Glass Gas Stove Stainless Steel Manual Gas Stove (3 Burners)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/gas-stove/d/b/9/3-lpg-7-ca-301-blkd-cute-sigri-wala-75-manual-original-imah7jtb5f7ez4qf.jpeg?q=90"
+        data-price="1894"
+        data-old-price=9000"
+        data-discount="79"
+        data-rating="4.2"
+        data-reviews="133144"
+        data-affiliate="https://fktr.in/UJ4k4Pd">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk13"
+        data-platform="flipkart"
+        data-category="Mobiles"
+        data-delivery="Free Delivery"
+        data-name="Ai+ Nova 2 Ultra 5G (Purple, 128 GB) (6 GB RAM)"
+        data-image="https://rukminim2.flixcart.com/image/1528/1528/xif0q/mobile/j/g/p/-original-imahn83bkk3pvney.jpeg?q=90"
+        data-price="20999"
+        data-old-price="25999"
+        data-discount="19"
+        data-rating="4.1"
+        data-reviews="3819"
+        data-affiliate="https://fktr.in/Mugu7yu">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk30"
+        data-platform="flipkart"
+        data-category="Home"
+        data-delivery="Free Delivery"
+        data-name="Hocks Black Curve 5 L Induction Bottom Pressure Cooker (Hard Anodized)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/pressure-cooker/p/r/c/yes-1-black-curve-induction-base-hocks-original-imahmw5edz7m857g.jpeg?q=90"
+        data-price="1392"
+        data-old-price="2882"
+        data-discount="52"
+        data-rating="4.2"
+        data-reviews="10337"
+        data-affiliate="https://fktr.in/vnp2GZy">
+    </div>
+<div
+        class="product-data"
+        data-id="fk31"
+        data-platform="flipkart"
+        data-category="Home"
+        data-delivery="Free Delivery"
+        data-name="Oakcraft High Back Chair | 120kg Weight Capacity | Metal Base | 3 Yr Warranty Leatherette Office Executive Chair "
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/office-study-chair/q/x/d/1-stainless-steel-53-34-brown-color-revolving-leather-chair-for-original-imahmap4w9rmwppw.jpeg?q=90"
+        data-price="7219"
+        data-old-price="19999"
+        data-discount="64"
+        data-rating="4.1"
+        data-reviews="10337"
+        data-affiliate="https://fktr.in/SBXy9aD">
+    </div>
+
+<div
+        class="product-data"
+        data-id="fk32"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Oumad Printed Kurta, Palazzo & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/3/e/u/xl-boota-maroon-oumad-resized-original-imahgr9thghqmnh2.jpeg?q=90"
+        data-price="662"
+        data-old-price="2499"
+        data-discount="74"
+        data-rating="4.1"
+        data-reviews="32667"
+        data-affiliate="https://fktr.in/HI0JwZt">
+    </div>
+
+<div
+        class="product-data"
+        data-id="fk33"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Samiksha Textile Printed Kurta, Palazzo & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/j/2/c/xxl-cade-no-4160-samiksha-textile-original-imahzzg522h83yft.jpeg?q=90"
+        data-price="670"
+        data-old-price="2999"
+        data-discount="78"
+        data-rating="3.9"
+        data-reviews="13952"
+        data-affiliate="https://fktr.in/5r5wr78">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk34"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="DELLYIMPEX AFREEN ENTERPRISE Embroidered Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/v/s/j/l-round-neck-see-craft-original-imahphupdevh8kvr.jpeg?q=90"
+        data-price="470"
+        data-old-price="2199"
+        data-discount="79"
+        data-rating="4"
+        data-reviews="3952"
+        data-affiliate="https://fktr.in/9u2VQxY">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk35"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Vastra Aura Embroidered Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/y/a/s/xxs-k-kurti2-kapdewala-original-imahm5pnmbfujzch.jpeg?q=90"
+        data-price="450"
+        data-old-price="2500"
+        data-discount="82"
+        data-rating="3.9"
+        data-reviews="1352"
+        data-affiliate="https://fktr.in/wYf70uu">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk36"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Krushant FIZAFASHION Embroidered Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/j/q/n/xxl-u-neck-krushant-original-imahpgz2ejtycedw.jpeg?q=90"
+        data-price="464"
+        data-old-price="2498"
+        data-discount="81"
+        data-rating="3.6"
+        data-reviews="952"
+        data-affiliate="https://fktr.in/miF2O0D">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk191"
+        data-platform="flipkart"
+        data-category=" Grocery"
+        data-delivery="Free Delivery"
+        data-name="Colgate Extra Clean Toothbrush – Medium Medium Toothbrush (Pack of 6)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/toothbrush/v/1/k/extra-clean-toothbrush-medium-6-colgate-medium-original-imah2syyysabgkjd.jpeg?q=90"
+        data-price="64"
+        data-old-price="108"
+        data-discount="41"
+        data-rating="4.2"
+        data-reviews="616"
+        data-affiliate="https://fktr.in/4uiCxlT">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk37"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Krushant FASHION Embroidered Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/x/m/t/xxl-u-neck-kurti-jashmeen-panthifancylace-original-imahqpzsggtdqs43.jpeg?q=90"
+        data-price="486"
+        data-old-price="2299"
+        data-discount="79"
+        data-rating="4"
+        data-reviews="2152"
+        data-affiliate="https://fktr.in/aCmzEOD">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk38"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="SARVAGNA Kurti Pant and Dupatta Set for Women | 3 Piece Set | Ethnic Wear | Festive Wear Embroidered Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/s/u/o/xl-sweety-dwapar-original-imahpajgrpv4gvj3.jpeg?q=90"
+        data-price="498"
+        data-old-price="2499"
+        data-discount="80"
+        data-rating="4"
+        data-reviews="1776"
+        data-affiliate="https://fktr.in/RidoAjB">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk39"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="AQZEE CLOTHING Printed Anarkali Kurta, Bottom & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/y/p/x/m-bandej-aqzee-clothing-original-imahh7knfwepz7xs.jpeg?q=90"
+        data-price="563"
+        data-old-price="3499"
+        data-discount="84"
+        data-rating="3.8"
+        data-reviews="474"
+        data-affiliate="https://fktr.in/VjqsUuB">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk40"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="KALYAN ENTERPRISES Printed Anarkali Kurta, Bottom & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/4/u/s/m-anarkalikurtasetblack-kalyan-enterprises-resized-original-imah2ugxymdqrnkk.jpeg?q=90"
+        data-price="664"
+        data-old-price="2999"
+        data-discount="78"
+        data-rating="3.9"
+        data-reviews="7002"
+        data-affiliate="https://fktr.in/XOrb9Oj">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk41"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="The HB Fashion Women Cotton Blend Kurta Pant Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/v/s/j/l-round-neck-see-craft-original-imahphupdevh8kvr.jpeg?q=90"
+        data-price="489"
+        data-old-price="2300"
+        data-discount="79"
+        data-rating="4"
+        data-reviews="15357"
+        data-affiliate="https://fktr.in/E6QuIG5">
+    </div>
+
+
+
+
+    <div
+        class="product-data"
+        data-id="fk42"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="C4A Embroidered Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/c/t/3/l-66-green-harkhani-fashion-original-imahnu7ry6hagwur.jpeg?q=90"
+        data-price="571"
+        data-old-price="1299"
+        data-discount="56"
+        data-rating="3.9"
+        data-reviews="1664"
+        data-affiliate="https://fktr.in/1CVvRwQ">
+    </div>
+
+<div
+        class="product-data"
+        data-id="fk43"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Femvy Women Cotton Blend Kurti Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/gown/9/y/b/na-l-full-sleeve-stitched-ss-227-05-femvy-na-original-imahc33pkczjye8a.jpeg?q=90"
+        data-price="328"
+        data-old-price="1999"
+        data-discount="84"
+        data-rating="4"
+        data-reviews="1557"
+        data-affiliate="https://fktr.in/fhsacaf">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk44"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Femvy Women Cotton Blend Kurti Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/gown/h/c/e/na-m-full-sleeve-stitched-ss-222-02-femvy-na-original-imah8wpg5ght843e.jpeg?q=90"
+        data-price="328"
+        data-old-price="1999"
+        data-discount="84"
+        data-rating="3.3"
+        data-reviews="357"
+        data-affiliate="https://fktr.in/odr0Jhk">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk45"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Femvy Women Cotton Blend Kurti Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/gown/v/r/f/na-m-full-sleeve-stitched-ss-228-03-femvy-na-original-imahc33uhzhtv7hs.jpeg?q=90"
+        data-price="328"
+        data-old-price="1999"
+        data-discount="84"
+        data-rating="3.2"
+        data-reviews="317"
+        data-affiliate="https://fktr.in/SveCVBv">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk46"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="MIRAATRI Women Cotton Blend Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/f/h/a/s-vrinda-mehandi-mrt-s-miraatri-original-imahq52vvdhywymg.jpeg?q=90"
+        data-price="435"
+        data-old-price="1599"
+        data-discount="73"
+        data-rating="4"
+        data-reviews="254"
+        data-affiliate="https://fktr.in/rKSA2au">
+    </div>
+
+
+    <div
+        class="product-data"
+        data-id="fk47"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Allora Mercora Women Cotton Blend Kurta Pant Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/j/u/w/xl-ethnic-set-11-allora-mercora-original-imahpshht4ndkfyp.jpeg?q=90"
+        data-price="392"
+        data-old-price="1499"
+        data-discount="74"
+        data-rating="3.4"
+        data-reviews="2314"
+        data-affiliate="https://fktr.in/cJ1WPEm">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk48"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="AESTHETIC ENTERPRISE Embroidered Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/6/h/t/xxl-meena-beautiful-kurta-set-aesthetic-enterprise-original-imahkmzm3m4jszu2.jpeg?q=90"
+        data-price="373"
+        data-old-price="2800"
+        data-discount="87"
+        data-rating="3.8"
+        data-reviews="791"
+        data-affiliate="https://fktr.in/gT6uCCw">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk49"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="ONSenterprise Embroidered Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/5/u/v/xs-galu-rekag-original-imahkr3sqhzcmnzh.jpeg?q=90"
+        data-price="401"
+        data-old-price="1999"
+        data-discount="80"
+        data-rating="3.9"
+        data-reviews="40"
+        data-affiliate="https://fktr.in/TmFQ6dl">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk50"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="ONSenterprise Embroidered Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/o/b/0/s-galu-rekag-original-imahkr3sdd4eyz57.jpeg?q=90"
+        data-price="467"
+        data-old-price="1999"
+        data-discount="77"
+        data-rating="3.2"
+        data-reviews="255"
+        data-affiliate="">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk51"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="ETHINCVILLAA Women Viscose Rayon Kurta Palazzo Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/d/k/d/xl-101bandej-ethincvillaa-original-imahhut8weg8h3vc.jpeg?q=90"
+        data-price="579"
+        data-old-price="4999"
+        data-discount="88"
+        data-rating="4.1"
+        data-reviews="107"
+        data-affiliate="https://fktr.in/94zDU32">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk52"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="KROLIANT Embroidered Kurta, Palazzo & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/c/u/x/m-101-kroliant-original-imahzfm8n9sfp6uy.jpeg?q=90"
+        data-price="548"
+        data-old-price="1999"
+        data-discount="73"
+        data-rating="3.8"
+        data-reviews="601"
+        data-affiliate="https://fktr.in/0y8uCW0">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk53"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Veer Creation House Self Design Kurta, Salwar & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/shopsy-ethnic-set/t/3/f/s-sh-esw-gopifhn-plkhi-purple-s-goapifashion-original-imahnbzaq4ufrcre.jpeg?q=90"
+        data-price="699"
+        data-old-price="1999"
+        data-discount="65"
+        data-rating="3.3"
+        data-reviews="451"
+        data-affiliate="https://fktr.in/1s4p5qy">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk180"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="METRONAUT Men Regular Fit Self Design Formal Shirt (Pack of 2)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/shirt/h/s/q/l-pmst-094-black-maroon-metronaut-resized-original-imahgfsskhejhnq7.jpeg?q=90"
+        data-price="512"
+        data-old-price="2599"
+        data-discount="80"
+        data-rating="4.1"
+        data-reviews="5021"
+        data-affiliate="https://fktr.in/b5sJf64">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk54"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="KLAWIA Embroidered Kurta, Salwar & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/shopsy-salwar-kurta-dupatta/w/q/h/xl-sop-skd96-helwin-designer-original-imahzgpanhmfje7f.jpeg?q=90"
+        data-price="593"
+        data-old-price="1999"
+        data-discount="70"
+        data-rating="4.7"
+        data-reviews="3"
+        data-affiliate="https://fktr.in/EZhLtsE">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk55"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Zestleaf Women Embroidered Kurta with Trouser & Dupatta Set Embroidered Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/shopsy-salwar-kurta-dupatta/h/x/b/m-off-white-ethnic-wear-suit-set-for-festive-occasions-original-imahnnvyyq9zqkxd.jpeg?q=90"
+        data-price="695"
+        data-old-price="2499"
+        data-discount="72"
+        data-rating="4.7"
+        data-reviews="61"
+        data-affiliate="https://fktr.in/nSs5mx7">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk56"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="rutva Printed Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/m/7/9/xl-fwdcl-050-beads-floral-pristino-original-imahjyf3ceg9htyh.jpeg?q=90"
+        data-price="871"
+        data-old-price="2999"
+        data-discount="71"
+        data-rating="3.7"
+        data-reviews="3"
+        data-affiliate="https://dl.flipkart.com/s/bx53XBNNNN">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk57"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Femvy Women Cotton Blend Kurti Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/gown/z/k/l/na-xxl-full-sleeve-stitched-ss-224-17-femvy-na-original-imah8vcuxtwbbrfz.jpeg?q=90"
+        data-price="445"
+        data-old-price="1999"
+        data-discount="78"
+        data-rating="4.3"
+        data-reviews="8"
+        data-affiliate="https://fktr.in/1OWVz9R">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk58"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Tasrika Women Silk Blend Kurta Sharara Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/f/o/n/xxl-fiza-kalini-original-imahzfwywnnqh4f4.jpeg?q=90"
+        data-price="1428"
+        data-old-price="5999"
+        data-discount="76"
+        data-rating="3.8"
+        data-reviews="15"
+        data-affiliate="https://fktr.in/6JHCk3k">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk59"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="LEKHITFAB Women Silk Blend Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/j/u/6/m-vr-twill-grey-pantos-original-imahn6vpz6tughy2.jpeg?q=90"
+        data-price="1498"
+        data-old-price="3999"
+        data-discount="63"
+        data-rating="4.2"
+        data-reviews="7"
+        data-affiliate="https://fktr.in/5Vumcux">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk60"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Divastri Women Silk Blend Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/p/7/j/xl-pp-9616-b-pptoss-original-imahp2zasyfghchs.jpeg?q=90"
+        data-price="1409"
+        data-old-price="4499"
+        data-discount="69"
+        data-rating="3.8"
+        data-reviews="19"
+        data-affiliate="https://fktr.in/u3535Ee">
+    </div>
+
+
+
+     <div
+        class="product-data"
+        data-id="fk61"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="DRIZZLE Women Cotton Blend Kurti Pant Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/b/1/q/l-kathabackemb-sadya-attire-original-imahzavwzqchhxey.jpeg?q=90"
+        data-price="434"
+        data-old-price="1499"
+        data-discount="71"
+        data-rating="3.6"
+        data-reviews="3057"
+        data-affiliate="https://fktr.in/X25R3V1">
+    </div>
+
+     <div
+        class="product-data"
+        data-id="fk62"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Youthnic Women Linen Kurta Salwar Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/x/n/g/s-bt165-nishi-youthnic-original-imahhyhj3myd7bn8.jpeg?q=90"
+        data-price="637"
+        data-old-price="4282"
+        data-discount="85"
+        data-rating="4.2"
+        data-reviews="4562"
+        data-affiliate="https://fktr.in/jr3Ol3v">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk63"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="AZYERA Women Viscose Rayon Kurta Palazzo Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/3/t/o/xl-10001-azyera-original-imahh28wcjxufzer.jpeg?q=90"
+        data-price="424"
+        data-old-price="2999"
+        data-discount="86"
+        data-rating="4.2"
+        data-reviews="321"
+        data-affiliate="https://fktr.in/pnAYRQc">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk192"
+        data-platform="flipkart"
+        data-category=" Grocery"
+        data-delivery="Free Delivery"
+        data-name="Pears Original Glycerin Soap Bar - Pure & Gentle Glow | With 98% Pure Glycerin (8 x 125 g)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/soap/z/r/j/-original-imahgk9gtwdzkfx4.jpeg?q=90"
+        data-price="484"
+        data-old-price="610"
+        data-discount="21"
+        data-rating="4.5"
+        data-reviews="373118"
+        data-affiliate="https://fktr.in/bm6x9Dl">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk64"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Qluture Women Viscose Rayon Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/o/i/9/xs-kgf-qluture-original-imahhbyygb2p5ztp.jpeg?q=90"
+        data-price="478"
+        data-old-price="1299"
+        data-discount="63"
+        data-rating="3.8"
+        data-reviews="253"
+        data-affiliate="https://fktr.in/j4PmDjV">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk65"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Jyoti Fashion Women Cotton Rayon Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/e/q/2/l-td-prpl-mishti-fashion-original-imahejptbmp9wtfz.jpeg?q=90"
+        data-price="473"
+        data-old-price="2499"
+        data-discount=30"
+        data-rating="4.2"
+        data-reviews="30"
+        data-affiliate="https://dl.flipkart.com/s/b1veIGNNNN">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk66"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="TRAHIMAM Women Viscose Rayon Kurti Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/t/8/6/s-bg-93-leriya-trahimam-original-imahhx6qfuynctud.jpeg?q=90"
+        data-price="470"
+        data-old-price="2999"
+        data-discount="84"
+        data-rating="3.9"
+        data-reviews="5987"
+        data-affiliate="https://fktr.in/HHd16hm">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk67"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="TrendStitch TS-YELLOW-3PIECE Embroidered Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/r/o/i/s-yellow-3set-trendstitch-original-imahq5uhxhkgtxce.jpeg?q=90"
+        data-price="500"
+        data-old-price="1999"
+        data-discount="75"
+        data-rating="3.8"
+        data-reviews="19"
+        data-affiliate="https://fktr.in/1cMc3t0">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk68"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Femvy Women Cotton Blend Kurti Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/gown/r/h/a/na-s-full-sleeve-stitched-ss-224-05-femvy-na-original-imah8uhhxycnvabp.jpeg?q=90"
+        data-price="445"
+        data-old-price="1999"
+        data-discount="78"
+        data-rating="3.8"
+        data-reviews="105"
+        data-affiliate="https://fktr.in/tbnCUq6">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk68"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="RHET FASHION Women Cotton Silk Kurta Pant Attached Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/r/6/l/3xl-168-mf-s-rhet-fashion-original-imahn9b45hd5ffee.jpeg?q=90"
+        data-price="801"
+        data-old-price="2999"
+        data-discount="73"
+        data-rating="4.2"
+        data-reviews="51"
+        data-affiliate="https://fktr.in/nwdubDr">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk69"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="RHET FASHION Women Cotton Silk Kurta Pant Attached Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/n/p/i/l-tanottextiles-164-rama-tanottextiles-original-imahphgkynqbngw6.jpeg?q=90"
+        data-price="753"
+        data-old-price="2999"
+        data-discount="75"
+        data-rating="4"
+        data-reviews="121"
+        data-affiliate="https://fktr.in/6aDSd3N">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk70"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Divastri Women Silk Blend Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/p/7/j/xl-pp-9616-b-pptoss-original-imahp2zasyfghchs.jpeg?q=90"
+        data-price="1409"
+        data-old-price="4499"
+        data-discount="69"
+        data-rating="3.8"
+        data-reviews="19"
+        data-affiliate="https://fktr.in/u3535Ee">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk71"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="SILHARA Women Pure Cotton Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/i/x/9/l-pca-1017-green-silhara-original-imahn2v34h8n2pzh.jpeg?q=90"
+        data-price="943"
+        data-old-price="4599"
+        data-discount="79"
+        data-rating="4.1"
+        data-reviews="224"
+        data-affiliate="https://fktr.in/0vqzaFq">
+    </div>
+
+
+     <div
+        class="product-data"
+        data-id="fk72"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="okf Women Crepe Crop Top Skirt Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/r/i/d/xl-105-shibori-okf-original-imagsuw46hrt3ycg.jpeg?q=90"
+        data-price="306"
+        data-old-price="1499"
+        data-discount="80"
+        data-rating="3.8"
+        data-reviews="2270"
+        data-affiliate="https://fktr.in/WeymTKp">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk73"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="okf Women Crepe Crop Top Skirt Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/v/q/g/xl-101-shibori-okf-original-imagt4qw6qgfdyzk.jpeg?q=90"
+        data-price="309"
+        data-old-price="1499"
+        data-discount="79"
+        data-rating="3.8"
+        data-reviews="1187"
+        data-affiliate="https://fktr.in/3DiCkkU">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk74"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Indo Era Women Silk Blend Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/f/a/2/s-rrrrr6208-indo-era-original-imah27fgcfestzpp.jpeg?q=90"
+        data-price="1949"
+        data-old-price="8999"
+        data-discount="78"
+        data-rating="3.8"
+        data-reviews="4"
+        data-affiliate="https://fktr.in/m850g7u">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk75"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Gf Gul Fashion Women Art Silk Kurta Pant Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/j/1/1/m-gul-506-silkpeach-gf-gul-fashion-resized-original-imahk6k2zwcqrasc.jpeg?q=90"
+        data-price="288"
+        data-old-price="2200"
+        data-discount="87"
+        data-rating="3.9"
+        data-reviews="28769"
+        data-affiliate="https://fktr.in/S6OxjAt">
+    </div>
+
+
+
+    <div
+        class="product-data"
+        data-id="fk76"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Tibra Attire Women Cotton Blend Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/shopsy-ethnic-set/7/k/h/xxl-tibra-vikshi-resized-original-imahk7dxkzjvcefk.jpeg?q=90"
+        data-price="397"
+        data-old-price="1499"
+        data-discount="74"
+        data-rating="4.1"
+        data-reviews="361955"
+        data-affiliate="https://fktr.in/F25VOTo">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk77"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="TUNNI Women Viscose Rayon Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/m/w/j/l-gr03-tunni-resized-original-imah9adjefjgyubg.jpeg?q=90"
+        data-price="458"
+        data-old-price="1999"
+        data-discount="77"
+        data-rating="3.8"
+        data-reviews="5418"
+        data-affiliate="https://fktr.in/csdLxIB">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk78"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="DD's creation Women Cotton Blend Ethnic Top Pant Attached Dupatta...more"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/shopsy-ethnic-set/3/a/h/m-zc101-maroon-dd-s-creation-original-imahg79fe3mtkwzm.jpeg?q=90"
+        data-price="483"
+        data-old-price="1499"
+        data-discount="88"
+        data-rating="4"
+        data-reviews="1499"
+        data-affiliate="https://fktr.in/zbuCBf0">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk79"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Tibra Attire Women Cotton Blend Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/shopsy-ethnic-set/v/r/q/l-embroidery-01-tibra-creations-resized-original-imahk5amfqgmhbg5.jpeg?q=90"
+        data-price="410"
+        data-old-price="1499"
+        data-discount="73"
+        data-rating="4.1"
+        data-reviews="361955"
+        data-affiliate="https://fktr.in/irOikxu">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk80"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="ONSenterprise Shanaya Embroidered Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/c/l/5/s-d3p-019-zeavi-original-imahjrp24znfgz4c.jpeg?q=90"
+        data-price="386"
+        data-old-price="2599"
+        data-discount="85"
+        data-rating="3.7"
+        data-reviews="350"
+        data-affiliate="https://fktr.in/ndXwR92">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk81"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Salzox Embroidered Anarkali Kurta, Bottom & Dupatta Se"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/y/a/2/4xl-162-lavendar-4xl-salzox-original-imahkjchzdjkzvvd.jpeg?q=90"
+        data-price="744"
+        data-old-price="3499"
+        data-discount="79"
+        data-rating="4.2"
+        data-reviews="574"
+        data-affiliate="https://fktr.in/JYvA2Hh">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk82"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Tibra Attire Women Cotton Blend Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/p/p/s/xl-embro001-tibra-attire-original-imahktv3qvuwghvb.jpeg?q=90"
+        data-price="410"
+        data-old-price="1499"
+        data-discount="73"
+        data-rating="4.1"
+        data-reviews="361955"
+        data-affiliate="https://fktr.in/mhT9z3H">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk83"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="https://fktr.in/mhT9z3H"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/6/z/5/m-embro001-tibra-attire-resized-original-imahmd9hkszdyfkz.jpeg?q=90"
+        data-price="410"
+        data-old-price="1499"
+        data-discount="73"
+        data-rating="4.1"
+        data-reviews="361955"
+        data-affiliate="https://fktr.in/6GI5zt3">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk84"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Rekag Embroidered Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/q/u/c/xs-tm-02-niva-tmcreation-original-imahpnvmtexvnhhf.jpeg?q=90"
+        data-price="528"
+        data-old-price="2999"
+        data-discount="82"
+        data-rating="4.5"
+        data-reviews="8"
+        data-affiliate="https://fktr.in/3itoew3">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk85"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="SAHIL Floral Print Kurta, Salwar & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/6/z/8/m-floral-print-sahil-resized-original-imahma7afgjgjmsh.jpeg?q=90"
+        data-price="291"
+        data-old-price="999"
+        data-discount="71"
+        data-rating="4"
+        data-reviews="1078"
+        data-affiliate="https://fktr.in/ryluM40">
+    </div>
+
+
+    <div
+        class="product-data"
+        data-id="fk86"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="PERONICA FASHION Women Georgette Kurti Dupatta Se"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/q/w/o/l-akshara-peronica-fashion-original-imahpevrxhsm2b65.jpeg?q=90"
+        data-price="880"
+        data-old-price="2999"
+        data-discount="71"
+        data-rating="4"
+        data-reviews="6"
+        data-affiliate="https://fktr.in/yjh6ui4">
+    </div>
+
+    <div
+        class="product-data"
+        data-id="fk87"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="TWISSIMO Women Viscose Rayon Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/j/o/o/l-af-80-purple-twissimo-original-imahpcpbcbqztmzz.jpeg?q=90"
+        data-price="500"
+        data-old-price="500"
+        data-discount="75"
+        data-rating="4"
+        data-reviews="90"
+        data-affiliate="https://fktr.in/PtuIYIp">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk88"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="LADYWERE DF-MANBHAVAN Embroidered Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/y/o/m/l-df-manbhavan-ladywere-original-imahzgyk5syg4zgu.jpeg?q=90"
+        data-price="873"
+        data-old-price="4999"
+        data-discount="83"
+        data-rating="3.8"
+        data-reviews="10"
+        data-affiliate="https://fktr.in/VS9Ks3i">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk89"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="aurbhi Women Cotton Rayon Kurti Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/s/z/k/m-oa352nbe-aurbhi-original-imahnkgygzghxwzt.jpeg?q=90"
+        data-price="483"
+        data-old-price="2499"
+        data-discount="81"
+        data-rating="3.8"
+        data-reviews="820"
+        data-affiliate="https://fktr.in/alAvQGV">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk90"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Fashtown Women Viscose Rayon Kurti Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/l/s/o/m-ruhi-shree-ramkrishna-fab-original-imahg2f6sfhzchku.jpeg?q=90"
+        data-price="465"
+        data-old-price="2999"
+        data-discount="84"
+        data-rating="4"
+        data-reviews="19683"
+        data-affiliate="https://fktr.in/g1s4hNd">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk91"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Janmantar Women Viscose Rayon Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/f/k/u/xxl-diva-klikniz-original-imahgew8ducfahch.jpeg?q=90"
+        data-price="585"
+        data-old-price="1999"
+        data-discount="71"
+        data-rating="4.4"
+        data-reviews="204"
+        data-affiliate="https://fktr.in/pylfghJ">
+    </div>
+
+     <div
+        class="product-data"
+        data-id="fk92"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Aimca Embroidered Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/q/a/n/m-blue-nyra-cut-aimca-resized-original-imahgka7bjbqzhzg.jpeg?q=90"
+        data-price="450"
+        data-old-price="2500"
+        data-discount="82"
+        data-rating="3.9"
+        data-reviews="39790"
+        data-affiliate="https://fktr.in/HjwJKX2">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk93"
+        data-platform="flipkart"
+        data-category="Book"
+        data-delivery="Free Delivery"
+        data-name="Giriraj Publishing House Uttar Pradesh Police Special Topics (Hindi, Paperback, unknown)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/book/6/4/z/up-police-constable-special-topics-book-2026-by-ankit-bhati-sir-original-imahjhjv2xq2wvqb.jpeg?q=90"
+        data-price="116"
+        data-old-price="125"
+        data-discount="7"
+        data-rating="4.3"
+        data-reviews="1895"
+        data-affiliate="https://fktr.in/bwoKWOQ">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk94"
+        data-platform="flipkart"
+        data-category="Book"
+        data-delivery="Free Delivery"
+        data-name=" SSC GD Combo-2027 In Bilingual ( Maths,Reasoning,Samanya Hindi,Samanya Adyayan/Gyan) Set Of 4 Books By Ankit Bhati Sir,RWA,"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/regionalbooks/w/9/v/-original-imahp55vfse64t5x.jpeg?q=90"
+        data-price="223"
+        data-old-price="622"
+        data-discount="64"
+        data-rating="4.5"
+        data-reviews="77067"
+        data-affiliate="https://fktr.in/0yhUd6r">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk95"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="berrylicious Women Pure Cotton Kurta Palazzo Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/o/e/l/m-gu1352-berrylicious-original-imahr5hqzgeht7gg.jpeg?q=90"
+        data-price="1332"
+        data-old-price="4599"
+        data-discount="71"
+        data-rating="4.1"
+        data-reviews="434"
+        data-affiliate="https://fktr.in/NbVGgIB">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk96"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="AYUKTA INTERNATIONAL Women Art Silk Kurti Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/q/r/o/m-2051-ayukta-international-original-imahmm4gmzuw7zvw.jpeg?q=90"
+        data-price="634"
+        data-old-price="2999"
+        data-discount="79"
+        data-rating="4.2"
+        data-reviews="2429"
+        data-affiliate="https://fktr.in/4s1pZy9">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk97"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Aimca Embroidered Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/b/f/m/m-purple-nyra-cut-aimca-resized-original-imahghdygyhb9nhw.jpeg?q=90"
+        data-price="454"
+        data-old-price="2500"
+        data-discount="82"
+        data-rating="4.4"
+        data-reviews="39790"
+        data-affiliate="https://fktr.in/VD5ft9F">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk98"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="ALISHA CREATIONS Floral Print Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/j/i/r/s-new-set-with-dupatta-alisha-creations-original-imahqnt4hnwuwybv.jpeg?q=90"
+        data-price="361"
+        data-old-price="1399"
+        data-discount="74"
+        data-rating="4.4"
+        data-reviews="2047"
+        data-affiliate="https://fktr.in/FJwshfH">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk99"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Bruno Printed Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/e/t/6/l-coffee-gudiya-original-imagqkp4ge3ayzre.jpeg?q=90"
+        data-price="430"
+        data-old-price="1999"
+        data-discount="78"
+        data-rating="3.8"
+        data-reviews="32310"
+        data-affiliate="https://fktr.in/oxfb4Va">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk100"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="JS4K Women Pure Cotton Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/b/0/q/l-mustard-red-black-s4k-original-imahr392mg4pgvcr.jpeg?q=90"
+        data-price="805"
+        data-old-price="2999"
+        data-discount="73"
+        data-rating="4.2"
+        data-reviews="6190"
+        data-affiliate="https://fktr.in/hc2hAdB">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk101"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Oumad Printed Kurta, Palazzo & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/j/r/c/m-anarkali-maroon-oumad-resized-original-imahbgc5yjevx9yf.jpeg?q=90"
+        data-price="626"
+        data-old-price="2499"
+        data-discount="75"
+        data-rating="4.1"
+        data-reviews="79938"
+        data-affiliate="https://fktr.in/GvKgUbP">
+    </div>
+
+
+
+    <div
+        class="product-data"
+        data-id="fk102"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="NARI DREAM Women Tussar Silk Kurta Pant Attached Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/f/1/6/m-miss-94-miss-clothing-resized-original-imahgmq7segzv6uu.jpeg?q=90"
+        data-price="443"
+        data-old-price="2499"
+        data-discount="82"
+        data-rating="3.9"
+        data-reviews="14952"
+        data-affiliate="https://fktr.in/FpvnUhD">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk103"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Krisio Women Embroidered Fandy Silk Anarkali Kurta Set with Dupatta Embroidered Anarkali Kurta, Bottom & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/b/p/e/xl-kurti-sharara-dupatta-set-love-of-fashion-original-imahm5c5k4gngzga.jpeg?q=90"
+        data-price="1747"
+        data-old-price="8999"
+        data-discount="81"
+        data-rating="3.7"
+        data-reviews="3"
+        data-affiliate="https://fktr.in/11v9HiA">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk104"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Bhagyesh Fashion Women Cotton Rayon Kurta Palazzo Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/u/i/l/m-redjaal-dhibha-original-imahzzpf6ukuzuug.jpeg?q=90"
+        data-price="478"
+        data-old-price="1999"
+        data-discount="76"
+        data-rating="4.2"
+        data-reviews="33"
+        data-affiliate="https://fktr.in/XIF5OPd">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk105"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="ANJIKI Women Cotton Blend Kurti Pant Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/i/6/n/xl-sleeveless-kurta-set-sajrika-original-imahpjh9srfgmp3h.jpeg?q=90"
+        data-price="482"
+        data-old-price="2999"
+        data-discount="84"
+        data-rating="4.3"
+        data-reviews="3"
+        data-affiliate="https://fktr.in/b6aQqpP">
+    </div>
+
+
+
+     <div
+        class="product-data"
+        data-id="fk106"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="MOKOSH Women Pure Silk Kurti Sharara Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/d/o/s/xl-065-m-mokosh-original-imahq92uxygffyaq.jpeg?q=90"
+        data-price="997"
+        data-old-price="3599"
+        data-discount="72"
+        data-rating="4.9"
+        data-reviews="15"
+        data-affiliate="https://fktr.in/G1MtxMz">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk107"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Klikniz Polka Print Kurta, Trouser/Pant & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/salwar-kurta-dupatta/i/f/h/xxl-keshriya-klikniz-original-imahzfnwzver8r2g.jpeg?q=90"
+        data-price="565"
+        data-old-price="2399"
+        data-discount="76"
+        data-rating="4.1"
+        data-reviews="31"
+        data-affiliate="https://fktr.in/1ZMBWXg">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk108"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="NORIVA Self Design Kurta, Palazzo & Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/r/n/m/xxl-blue-kurta-02-kdvastra-original-imahp4zybxrvuetv.jpeg?q=90"
+        data-price="845"
+        data-old-price="2999"
+        data-discount="72"
+        data-rating="4.2"
+        data-reviews="13"
+        data-affiliate="https://fktr.in/2M8kvqP">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk109"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="YUG ART Printed, Embellished Bollywood Silk Blend Saree (Multicolor)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/1/n/d/free-sc-nv-or-saricholi-unstitched-original-imahzbk4fecqxt4b.jpeg?q=90"
+        data-price="1199"
+        data-old-price="3999"
+        data-discount="70"
+        data-rating="4.3"
+        data-reviews="4"
+        data-affiliate="https://fktr.in/32N7NCD">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk110"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Neel Fashion Woven Banarasi Pure Silk Saree (Light Green)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/shopsy-sari/s/8/9/free-manda-sixsense-unstitched-original-imahg5ypxesahr7u.jpeg?q=90"
+        data-price="338"
+        data-old-price="1999"
+        data-discount="83"
+        data-rating="4.4"
+        data-reviews="34"
+        data-affiliate="https://fktr.in/BwHdkls">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk111"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Abhilipsa Woven Banarasi Silk Blend, Pure Silk Saree (Green)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/h/m/n/free-kanjivaram-sarees-kanjivaram-saree-banarasi-silk-high-original-imahm9wucat7s2em.jpeg?q=90"
+        data-price="354"
+        data-old-price="2599"
+        data-discount="86"
+        data-rating="3.7"
+        data-reviews="1350"
+        data-affiliate="https://fktr.in/Ezfp6nT">
+    </div>
+
+
+
+     <div
+        class="product-data"
+        data-id="fk112"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Abhilipsa Woven Banarasi Silk Blend, Pure Silk Saree (Mustard, Yellow)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/l/p/y/free-kanjivaram-sarees-kanjivaram-saree-banarasi-silk-high-original-imahm9wubqfegthd.jpeg?q=90"
+        data-price="354"
+        data-old-price="2599"
+        data-discount="86"
+        data-rating="3.7"
+        data-reviews="1350"
+        data-affiliate="https://fktr.in/Q0z2cdt">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk113"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Bentayga Fashion Solid/Plain Bollywood Silk Blend Saree (Purple)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/t/g/5/free-prishti-prisha-unstitched-original-imahh2842z3aftk6.jpeg?q=90"
+        data-price="435"
+        data-old-price="2499"
+        data-discount="83"
+        data-rating="4.2"
+        data-reviews="76"
+        data-affiliate="https://fktr.in/9lBF2xm">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk114"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="NOOR BLACK Embellished Bollywood Georgette Saree (Red)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/l/y/v/free-designer-saree-with-intricate-border-noorblack-unstitched-original-imahqb6tkdxuvvkz.jpeg?q=90"
+        data-price="400"
+        data-old-price="1499"
+        data-discount="73"
+        data-rating="3.7"
+        data-reviews="1350"
+        data-affiliate="https://fktr.in/Rlq2sz1">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk115"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="GARIYA Woven Banarasi Art Silk Saree (Brown)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/g/a/o/free-hm-350-gariya-unstitched-resized-original-imahm22e9bxn9mdh.jpeg?q=90"
+        data-price="382"
+        data-old-price="2999"
+        data-discount="87"
+        data-rating="3.8"
+        data-reviews="5344"
+        data-affiliate="https://fktr.in/mAGi9o3">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk116"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="ZALA FASHION Woven Kanjivaram Jacquard, Pure Silk Saree (Purple)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/m/6/k/free-4574-wine-palkaano-unstitched-resized-original-imagh325hxtp7pxg.jpeg?q=90"
+        data-price="383"
+        data-old-price="3999"
+        data-discount="90"
+        data-rating="3.7"
+        data-reviews="102"
+        data-affiliate="https://fktr.in/3BFKh8e">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk117"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="renbriza Embellished Daily Wear Georgette Saree (Purple)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/h/x/w/free-padma1-renbriza-unstitched-resized-original-imahkfpykrsgfzzd.jpeg?q=90"
+        data-price="389"
+        data-old-price="3499"
+        data-discount="89"
+        data-rating="3.9"
+        data-reviews="511"
+        data-affiliate="https://fktr.in/j1rowu8">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk118"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="PRIMENIKS Woven Bollywood Art Silk Saree (Pink)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/u/4/x/free-designer-pink-1-primeniks-unstitched-resized-original-imahgr97carktguj.jpeg?q=90"
+        data-price="403"
+        data-old-price="2999"
+        data-discount="87"
+        data-rating="3.7"
+        data-reviews="151"
+        data-affiliate="https://fktr.in/70qPa5L">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk119"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Saree Destination Woven Banarasi Satin Saree (Light Blue)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/o/y/g/free-12096332-saree-destination-unstitched-original-imahpnb82cctyvmy.jpeg?q=90"
+        data-price="744"
+        data-old-price="4899"
+        data-discount="85"
+        data-rating="4.4"
+        data-reviews="90"
+        data-affiliate="https://fktr.in/3i68jlW">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk120"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="BOLOKA Woven Kanjivaram Cotton Silk Saree (Multicolor)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/o/5/v/free-4025-rama-boloka-unstitched-resized-original-imahkmzubrzuepw9.jpeg?q=90"
+        data-price="342"
+        data-old-price="1999"
+        data-discount="83"
+        data-rating="4.1"
+        data-reviews="292"
+        data-affiliate="https://fktr.in/YT6dBjo">
+    </div>
+
+
+
+
+ <div
+        class="product-data"
+        data-id="fk121"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="YUHNEBA Printed Banarasi Art Silk Saree (Maroon)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/w/p/6/free-booti-saree-yuhneba-unstitched-original-imahp3xgzzrgjce5.jpeg?q=90"
+        data-price="489"
+        data-old-price="1499"
+        data-discount="67"
+        data-rating="4.3"
+        data-reviews="20"
+        data-affiliate="https://fktr.in/7f1CsXk">
+    </div>
+
+ <div
+        class="product-data"
+        data-id="fk122"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="hesika Embellished Daily Wear Art Silk Saree (Black, Grey)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/f/h/t/free-masti-black-hesika-unstitched-resized-original-imahg5wfj7gmmhzw.jpeg?q=90"
+        data-price="393"
+        data-old-price="1599"
+        data-discount="75"
+        data-rating="3.6"
+        data-reviews="23084"
+        data-affiliate="https://fktr.in/1k5pgDR">
+    </div>
+
+ <div
+        class="product-data"
+        data-id="fk123"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="KanjiQueen Woven Paithani Silk Blend, Pure Silk Saree (Magenta)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/s/r/o/free-khatushyam-wine-kanjiqueen-unstitched-original-imahjn8gjy5vkzpg.jpeg?q=90"
+        data-price="500"
+        data-old-price="1499"
+        data-discount="67"
+        data-rating="4"
+        data-reviews="183"
+        data-affiliate="https://fktr.in/ivQLBX3">
+    </div>
+
+ <div
+        class="product-data"
+        data-id="fk124"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="STARWOMEN Woven Banarasi Cotton Silk, Art Silk Saree (Pink)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/l/v/s/free-2626-peachpurple-yourwish-unstitched-original-imahm4dbjxhgpe4h.jpeg?q=90"
+        data-price="503"
+        data-old-price="999"
+        data-discount="50"
+        data-rating="3.9"
+        data-reviews="449"
+        data-affiliate="https://fktr.in/GztP5XT">
+    </div>
+
+ <div
+        class="product-data"
+        data-id="fk125"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="FABMORA Embellished, Printed Bollywood Chiffon Saree (Black, Gold)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/a/c/b/free-sarees-new2023-partywear-wedding-chiffon-saree-design-2023-original-imah8xpkusz2hdys.jpeg?q=90"
+        data-price="357"
+        data-old-price="1499"
+        data-discount="76"
+        data-rating="3.7"
+        data-reviews="16947"
+        data-affiliate="https://fktr.in/EcB00NZ">
+    </div>
+
+ <div
+        class="product-data"
+        data-id="fk126"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="3Buddy Fashion Printed Bollywood Lycra Saree (Brown)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/j/6/u/free-lycra-frill-sadi-3buddy-fashion-unstitched-original-imahzkcsg9dhunyp.jpeg?q=90"
+        data-price="395"
+        data-old-price="2599"
+        data-discount="85"
+        data-rating="4.3"
+        data-reviews="3"
+        data-affiliate="https://fktr.in/xxnz3U2">
+    </div>
+ <div
+        class="product-data"
+        data-id="fk127"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Divastri Embellished, Woven Kanjivaram Silk Blend Saree (Cream, Pink, Gold)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/e/g/n/free-samira-cream-villagius-unstitched-resized-original-imah422bsj9nkmdg.jpeg?q=90"
+        data-price="572"
+        data-old-price="2999"
+        data-discount="81"
+        data-rating="4.1"
+        data-reviews="5918"
+        data-affiliate="https://fktr.in/h8EpI6g">
+    </div>
+
+ <div
+        class="product-data"
+        data-id="fk128"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Saree Destination Woven Banarasi Satin Saree (Blue)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/4/h/z/free-r4966-saree-destination-unstitched-original-imahpnbvu2bc6ztu.jpeg?q=90"
+        data-price="720"
+        data-old-price="4788"
+        data-discount="85"
+        data-rating="4.4"
+        data-reviews="90"
+        data-affiliate="https://fktr.in/2wUY2bS">
+    </div>
+
+ <div
+        class="product-data"
+        data-id="fk129"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="SareeHB Embellished Banarasi Satin Saree (Maroon)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/s/i/9/-original-imahr7cqqqqbhqbd.jpeg?q=90"
+        data-price="550"
+        data-old-price="5000"
+        data-discount="89"
+        data-rating="3.8"
+        data-reviews="293"
+        data-affiliate="https://fktr.in/WoNdWmu">
+    </div>
+
+ <div
+        class="product-data"
+        data-id="fk130"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="RK Creation Embroidered Berhampuri Pure Silk Saree (Maroon)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/b/z/p/-original-imahr8kczhvmfhfn.jpeg?q=90"
+        data-price="733"
+        data-old-price="2752"
+        data-discount="83"
+        data-rating="3.6"
+        data-reviews="1059"
+        data-affiliate="https://fktr.in/ZqEPQS0">
+    </div>
+
+ <div
+        class="product-data"
+        data-id="fk131"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Tilfelle Woven Banarasi Satin Saree (Blue)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/8/f/2/free-y655-tilfelle-unstitched-original-imahmgmwphz4pgfy.jpeg?q=90"
+        data-price="748"
+        data-old-price="2999"
+        data-discount="75"
+        data-rating="4.2"
+        data-reviews="73"
+        data-affiliate="https://fktr.in/XcouYvC">
+    </div>
+
+     <div
+        class="product-data"
+        data-id="fk132"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="TF SILK HOUSE Woven Banarasi Satin Saree (Dark Green)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/9/c/0/free-stn-skrt-s-btl-tf-silk-house-unstitched-original-imahnn5fygkzpzuz.jpeg?q=90"
+        data-price="781"
+        data-old-price="2999"
+        data-discount="74"
+        data-rating="4.2"
+        data-reviews="73"
+        data-affiliate="https://fktr.in/ajxbiPd">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk133"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="GARIYA Woven Kanjivaram Jacquard Saree (Red)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/f/k/p/free-printed-self-design-paisley-woven-embellished-applique-resized-original-imahm4axgmfz2xvy.jpeg?q=90"
+        data-price="426"
+        data-old-price="3999"
+        data-discount="89"
+        data-rating="3.9"
+        data-reviews="1335"
+        data-affiliate="https://fktr.in/z1qNh5V">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk134"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="asrika Printed Bollywood Cotton Linen Saree (Multicolor)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/h/j/q/free-bg14-1024-parrot-jivika-enterprise-unstitched-original-imahzgy2thbjvnsf.jpeg?q=90"
+        data-price="618"
+        data-old-price="5999"
+        data-discount="90"
+        data-rating="4.1"
+        data-reviews="292"
+        data-affiliate="https://fktr.in/exvXQy5">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk135"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="VINTAGEOUTFITS Woven Banarasi Jacquard Saree (Purple)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/p/x/m/free-ltmor-purpel01-vintage-outfits-unstitched-original-imahqa57h7ksgcbn.jpeg?q=90"
+        data-price="763"
+        data-old-price="1000"
+        data-discount="24"
+        data-rating="4.1"
+        data-reviews="2872"
+        data-affiliate="https://fktr.in/X5u5l0l">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk136"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Aformi Printed Kanjivaram Art Silk Saree (Purple)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/o/f/h/free-women-s-woven-kanjivaram-art-silk-saree-with-blouse-piece-original-imahng2q5ezffvvx.jpeg?q=90"
+        data-price="363"
+        data-old-price="1599"
+        data-discount="77"
+        data-rating="3.6"
+        data-reviews="256"
+        data-affiliate="https://fktr.in/R4yBz7t">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk137"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Aformi Printed Kanjivaram Art Silk Saree (Purple)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/f/f/p/free-women-s-woven-kanjivaram-art-silk-saree-with-blouse-piece-original-imahnev53sgygfgz.jpeg?q=90"
+        data-price="378"
+        data-old-price="1799"
+        data-discount="79"
+        data-rating="4.1"
+        data-reviews="256"
+        data-affiliate="https://fktr.in/B1lPzDT">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk138"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Aformi Woven Kanjivaram Art Silk Saree (Pink)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/sari/k/q/b/free-women-s-woven-kanjivaram-art-silk-saree-with-blouse-piece-original-imahng2sgvgpmqrp.jpeg?q=90"
+        data-price="378"
+        data-old-price="1799"
+        data-discount="79"
+        data-rating="3.6"
+        data-reviews="39"
+        data-affiliate="https://fktr.in/cazzro4">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk139"
+        data-platform="flipkart"
+        data-category="Beauty"
+        data-delivery="Free Delivery"
+        data-name="blestaaa essentialss Lavender Calming Body Wash, For a Gentle Feeling Clean (300 ml)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/shopsy-body-wash/h/6/3/300-orchid-calming-body-wash-for-a-gentle-feeling-clean-1-original-imahmhme9s6cukyj.jpeg?q=90"
+        data-price=""79
+        data-old-price="599"
+        data-discount="87"
+        data-rating="4"
+        data-reviews="1326"
+        data-affiliate="https://fktr.in/yy3J951">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk140"
+        data-platform="flipkart"
+        data-category="Beauty"
+        data-delivery="Free Delivery"
+        data-name="Zanskar Muscle Recovery Epsom Body Wash (315 ml)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/body-wash/7/d/k/315-muscle-recovery-epsom-body-wash-1-zanskar-original-imahjzhyzaypgrbg.jpeg?q=90"
+        data-price="425"
+        data-old-price="499"
+        data-discount="15"
+        data-rating="4.8"
+        data-reviews="142"
+        data-affiliate="https://fktr.in/Ux92Ihl">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk141"
+        data-platform="flipkart"
+        data-category="Beauty"
+        data-delivery="Free Delivery"
+        data-name="Chemist at Play Lactic & Salicylic Acid Exfoliate Body Wash (236 ml)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/body-wash/n/e/g/236-exfoliating-body-wash-lactic-acid-salicylic-acid-shower-gel-original-imahm23jzxrtcztr.jpeg?q=90"
+        data-price="369"
+        data-old-price="399"
+        data-discount="8"
+        data-rating="4.3"
+        data-reviews="139351"
+        data-affiliate="https://fktr.in/R6v63Uv">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk142"
+        data-platform="flipkart"
+        data-category="Beauty"
+        data-delivery="Free Delivery"
+        data-name="DOVE Relaxing Shea Butter Body Wash with Vanilla for Soft Skin, Soothing Scent (1000 ml)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/body-wash/d/4/5/-original-imahymhcd7ghsryg.jpeg?q=90"
+        data-price="271"
+        data-old-price="949"
+        data-discount="71"
+        data-rating="4.5"
+        data-reviews="17879"
+        data-affiliate="https://fktr.in/dw2PN8P">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk143"
+        data-platform="flipkart"
+        data-category="Beauty"
+        data-delivery="Free Delivery"
+        data-name="eyurva 2 Pcs rosemary water for hair growth | rosemary water hair spray (200 ml)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/hair-treatment/e/z/z/200-2-pcs-rosemary-water-for-hair-growth-rosemary-water-hair-original-imahrea9fyu2hexz.jpeg?q=90"
+        data-price="126"
+        data-old-price="998"
+        data-discount="87"
+        data-rating="4"
+        data-reviews="781"
+        data-affiliate="https://fktr.in/stqdCY1">
+    </div>
+
+
+
+     <div
+        class="product-data"
+        data-id="fk144"
+        data-platform="flipkart"
+        data-category="Grocery"
+        data-delivery="Free Delivery"
+        data-name="Beyond Snack Kerala Banana Salt And Black Pepper Chips (75 g)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/chips/m/o/c/-enriched-transparent-original-imahhggwrgcvgjwz.png?q=90"
+        data-price="47"
+        data-old-price="60"
+        data-discount="22"
+        data-rating="4.1"
+        data-reviews="197"
+        data-affiliate="https://fktr.in/mvwUZ58">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk145"
+        data-platform="flipkart"
+        data-category=" Grocery"
+        data-delivery="Free Delivery"
+        data-name="KURKURE Puffcorn Cheese Namkeen (52 g)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/snack-savourie/i/6/9/-original-imahq8793hazwa7k.jpeg?q=90"
+        data-price="18"
+        data-old-price="20"
+        data-discount="10"
+        data-rating="4.2"
+        data-reviews="622"
+        data-affiliate="https://fktr.in/S0qMSyt">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk146"
+        data-platform="flipkart"
+        data-category=" Grocery"
+        data-delivery="Free Delivery"
+        data-name="Harpic Toilet Cleaner, Liquid, for basin, commode, tile, bathroom, not phenyl, blue Original Liquid Toilet Cleaner (1 L)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/toilet-cleaner/j/l/z/-original-imahzx4cduhfrdpg.jpeg?q=90"
+        data-price="220"
+        data-old-price="245"
+        data-discount="10"
+        data-rating="4.3"
+        data-reviews="53845"
+        data-affiliate="https://fktr.in/BSCGVW4">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk147"
+        data-platform="flipkart"
+        data-category="Grocery"
+        data-delivery="Free Delivery"
+        data-name="Harpic White & Shine Toilet Cleaner, Liquid, basin, commode, tile, bathroom, not phenyl Liquid Toilet Cleaner (1 L)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/toilet-cleaner/o/1/y/-original-imahqv8rfup626z9.jpeg?q=90"
+        data-price="208"
+        data-old-price="249"
+        data-discount="16"
+        data-rating="4.3"
+        data-reviews="6313"
+        data-affiliate="https://fktr.in/r949yiN">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk148"
+        data-platform="flipkart"
+        data-category=" Grocery"
+        data-delivery="Free Delivery"
+        data-name="Dettol Kitchen Dishwasher Liquid Gel, not bar, not powder, dishwashing Dish Cleaning Gel (Lemon Fresh, 1500 ml)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/dish-cleaning-gel/z/o/s/-original-imahqa5neuznhwup.jpeg?q=90"
+        data-price="213"
+        data-old-price="275"
+        data-discount="23"
+        data-rating="4.5"
+        data-reviews="152"
+        data-affiliate="https://fktr.in/kps6m5c">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk149"
+        data-platform="flipkart"
+        data-category="Grocery"
+        data-delivery="Free Delivery"
+        data-name="eyurva 2 Pcs rosemary water for hair growth | rosemary water hair spray (200 ml)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/hair-treatment/e/z/z/200-2-pcs-rosemary-water-for-hair-growth-rosemary-water-hair-original-imahrea9fyu2hexz.jpeg?q=90"
+        data-price="126"
+        data-old-price="998"
+        data-discount="87"
+        data-rating="4"
+        data-reviews="781"
+        data-affiliate="https://fktr.in/stqdCY1">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk150"
+        data-platform="flipkart"
+        data-category="Phone"
+        data-delivery="Phone"
+        data-name="Infinix HOT 60i 5G (Shadow Blue, 128 GB) (4 GB RAM)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/mobile/c/0/m/-original-imahf72y3y4uunfx.jpeg?q=90"
+        data-price="19999"
+        data-old-price="24999"
+        data-discount="20"
+        data-rating="4.3"
+        data-reviews="1572"
+        data-affiliate="https://fktr.in/1HNv9Jn">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk151"
+        data-platform="flipkart"
+        data-category="Phone"
+        data-delivery="Free Delivery"
+        data-name="realme P4s 5G (Titanium Gray, 128 GB) (8 GB RAM)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/mobile/f/6/l/-original-imahqh7n4vdzgmn3.jpeg?q=90"
+        data-price="34999"
+        data-old-price="48999"
+        data-discount="29"
+        data-rating="4.4"
+        data-reviews="384"
+        data-affiliate="https://fktr.in/G1kq9z0">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk152"
+        data-platform="flipkart"
+        data-category="Phone"
+        data-delivery="Free Delivery"
+        data-name="Ai+ Nova 2 5G (Blue, 128 GB) (6 GB RAM)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/mobile/9/p/c/-original-imahm9rwk2czenkh.jpeg?q=90"
+        data-price="14999"
+        data-old-price=""
+        data-discount=""
+        data-rating="4"
+        data-reviews="781"
+        data-affiliate="https://fktr.in/6sBd3X2">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk153"
+        data-platform="flipkart"
+        data-category="Phone"
+        data-delivery="Free Delivery"
+        data-name="BOLTT EVO (Midnight Black, 64 GB) (4 GB RAM)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/mobile/p/l/m/-original-imahqk5pabfpqz4g.jpeg?q=90"
+        data-price="10999"
+        data-old-price="17999"
+        data-discount="39"
+        data-rating="4.6"
+        data-reviews="508"
+        data-affiliate="https://fktr.in/2H8pdsp">
+    </div> 
+
+
+     <div
+        class="product-data"
+        data-id="fk154"
+        data-platform="flipkart"
+        data-category="Phone"
+        data-delivery="Free Delivery"
+        data-name="ASUS ExpertBook Ultra Full Metal Nano Ceramic Coating, OLED with ..."
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/computer/w/4/k/-original-imahr5drvzyfjusq.jpeg?q=90"
+        data-price="182990"
+        data-old-price="269990"
+        data-discount="32"
+        data-rating="4.8"
+        data-reviews="24"
+        data-affiliate="https://fktr.in/qIlow2T">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk155"
+        data-platform="flipkart"
+        data-category="Electronics"
+        data-delivery="Free Delivery"
+        data-name="ASUS Chromebook CX15 Intel Celeron Dual Core N50 - (4 GB/64 GB EM...)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/computer/z/y/b/-original-imahmhhnndrzhwtz.jpeg?q=90"
+        data-price="24990"
+        data-old-price=""
+        data-discount="70"
+        data-rating="285"
+        data-reviews="4"
+        data-affiliate="https://fktr.in/83FMgud">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk156"
+        data-platform="flipkart"
+        data-category="Electronics"
+        data-delivery="Free Delivery"
+        data-name="Primebook 2 Max (2026) in-Built AI MediaTek Helio G99 (MT8781) - ..."
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/computer/h/x/n/-original-imahfskhwd2rvnuh.jpeg?q=90"
+        data-price="32990"
+        data-old-price="49990"
+        data-discount="34"
+        data-rating="4.4"
+        data-reviews="1910"
+        data-affiliate="https://fktr.in/5V0burQ">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk157"
+        data-platform="flipkart"
+        data-category="Electronics"
+        data-delivery="Free Delivery"
+        data-name="WarnerCann Hi5 pro Intel Core i5 12th Gen - (8 GB/256 GB SSD/Wind..."
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/computer/v/0/4/business-hi5-pro-business-laptop-warnercann-original-imah6bcgh2bzgnwn.jpeg?q=90"
+        data-price="34566"
+        data-old-price="56000"
+        data-discount="38"
+        data-rating="4.3"
+        data-reviews="5"
+        data-affiliate="https://fktr.in/8ja4oMn">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk158"
+        data-platform="flipkart"
+        data-category="Electronics"
+        data-delivery="Free Delivery"
+        data-name="Primebook 2 Pro (2026) in-Built AI MediaTek Helio G99 (MT8781) - ..."
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/computer/t/i/8/-original-imahfskhzaahq9es.jpeg?q=90"
+        data-price="28990"
+        data-old-price="29990"
+        data-discount="28"
+        data-rating="4.4"
+        data-reviews="1910"
+        data-affiliate="https://fktr.in/EQgv7Xk">
+    </div>
+     <div
+        class="product-data"
+        data-id="fk159"
+        data-platform="flipkart"
+        data-category="Electronics"
+        data-delivery="Free Delivery"
+        data-name="AMKETTE Hush Pro Spectra Ambidextrous Optical Mouse (2.4GHz Wireless, Black)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/mouse/c/k/4/hush-pro-spectra-amkette-original-imagyh9pccszqkwp.jpeg?q=90"
+        data-price="299"
+        data-old-price="1099"
+        data-discount="73"
+        data-rating="4.3"
+        data-reviews="579"
+        data-affiliate="https://fktr.in/KXgq1sk">
+    </div>
+   
+
+
+<div
+        class="product-data"
+        data-id="fk161"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="RSROOVER SHOES Stylish | Comfortable | Breathable Training & Gym Shoes For Men (White , 9)"
+        data-image="https://rukminim2.flixcart.com/image/1528/1528/xif0q/shoe/n/h/b/9-505white-rsroover-shoes-white-original-imahayz5txuvdh8h.jpeg?q=90"
+        data-price="532"
+        data-old-price="999"
+        data-discount="47"
+        data-rating="4"
+        data-reviews="90"
+        data-affiliate="https://fktr.in/TbSYdmt">
+    </div>
+   
+   <div
+        class="product-data"
+        data-id="fk162"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="corsac BLACK SHOES PREMIUM QUALITY MEN Sneakers Casuals (Black) Casuals For Men Sneakers For Men (Black, Grey , 7)"
+        data-image="https://rukminim2.flixcart.com/image/1528/1528/xif0q/shoe/v/g/v/8-100-8-corsac-black-grey-resized-original-imahh7qddy8fqfyg.jpeg?q=90"
+        data-price="472"
+        data-old-price="1999"
+        data-discount="76"
+        data-rating="4.3"
+        data-reviews="1006"
+        data-affiliate="https://fktr.in/Eouk3sr">
+    </div>
+   
+   <div
+        class="product-data"
+        data-id="fk163"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Estela Women Viscose Rayon Kurta Palazzo Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/shopsy-ethnic-set/p/4/t/xl-alia-cut-tejas-original-imahcm7d84kwjyhz.jpeg?q=90"
+        data-price="453"
+        data-old-price="999"
+        data-discount="55"
+        data-rating="4"
+        data-reviews="3"
+        data-affiliate="https://fktr.in/koUyT3z">
+    </div>
+   
+   <div
+        class="product-data"
+        data-id="fk164"
+        data-platform="flipkart"
+        data-category="Electronics"
+        data-delivery="Free Delivery"
+        data-name="Ant Esports KM1410 Wired Gaming Keyboard and Mouse Combo Set (Black)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/laptop-accessories-combo/p/k/9/-original-imahjf2m5w2ghz5k.jpeg?q=90"
+        data-price="699"
+        data-old-price="1599"
+        data-discount="56"
+        data-rating="4.1"
+        data-reviews="921"
+        data-affiliate="https://fktr.in/tF1qSQ8">
+    </div>
+   
+   <div
+        class="product-data"
+        data-id="fk165"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Estela Women Cotton Rayon Kurti Palazzo Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/x/h/4/s-swastik-estela-resized-original-imahkhh4mvnd8y9k.jpeg?q=90"
+        data-price="461"
+        data-old-price="1999"
+        data-discount="77"
+        data-rating="3.6"
+        data-reviews="542"
+        data-affiliate="https://fktr.in/T1zA4ey">
+    </div>
+   
+   <div
+        class="product-data"
+        data-id="fk166"
+        data-platform="flipkart"
+        data-category="Electronics"
+        data-delivery="Free Delivery"
+        data-name="ENTWINO 4-1 Gaming Keyboard & Mouse Combo With Gaming Headphone + Mousepad Combo Set (Black)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/computer-acc-combo/7/c/v/4-1-gaming-mouse-gaming-keyboard-gaming-headphone-mouse-pad-original-imahhfdwguuzbqvg.jpeg?q=90"
+        data-price="1519"
+        data-old-price="4550"
+        data-discount="67"
+        data-rating="4"
+        data-reviews="163"
+        data-affiliate="https://fktr.in/PHrBW8A">
+    </div>
+   
+   <div
+        class="product-data"
+        data-id="fk167"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Indo Era Women Silk Blend Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/b/0/e/s-kh9mr6132-indo-era-original-imahyhchu7pecq2g.jpeg?q=90"
+        data-price="1963"
+        data-old-price="7999"
+        data-discount="75"
+        data-rating="4.4"
+        data-reviews="1006"
+        data-affiliate="https://fktr.in/f5i3hO1">
+    </div>
+   
+   <div
+        class="product-data"
+        data-id="fk168"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="berrylicious Women Silk Blend Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/w/j/h/m-sg1587-berrylicious-original-imahr5gb8rug73rf.jpeg?q=90"
+        data-price="1658"
+        data-old-price="6080"
+        data-discount="73"
+        data-rating="3.9"
+        data-reviews="106"
+        data-affiliate="https://fktr.in/wNuaLBi">
+    </div>
+   
+  
+   
+   <div
+        class="product-data"
+        data-id="fk170"
+        data-platform="flipkart"
+        data-category="Electronics"
+        data-delivery="Free Delivery"
+        data-name="ENTWINO D1-Black001 Wired Ambidextrous Optical  Gaming Mouse (USB 2.0, Black)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/mouse/b/d/s/d1-black001-entwino-original-imah4hzjyhdcuztp.jpeg?q=90"
+        data-price="261"
+        data-old-price="999"
+        data-discount="74"
+        data-rating="4"
+        data-reviews="1006"
+        data-affiliate="https://fktr.in/A90Lp0W">
+    </div>
+
+
+    <div
+        class="product-data"
+        data-id="fk171"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="berrylicious Women Pure Cotton Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/o/z/r/xl-ps3301-berrylicious-original-imahrc4rpmz5staz.jpeg?q=90"
+        data-price="818"
+        data-old-price="1900"
+        data-discount="57"
+        data-rating="3.9"
+        data-reviews="137"
+        data-affiliate="https://fktr.in/0Ee08go">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk172"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="berrylicious Women Pure Silk Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/m/z/e/m-kl7055-berrylicious-original-imahqh9umnj88wzf.jpeg?q=90"
+        data-price="1480"
+        data-old-price="5790"
+        data-discount="74"
+        data-rating="4.1"
+        data-reviews="19"
+        data-affiliate="https://fktr.in/Ccx57D1">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk173"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="THALASI Men Graphic Print Round Neck Polycotton Maroon T-Shirt"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/t-shirt/k/x/e/xxl-tts-710-gothic-mron-thalasi-resized-original-imahggyhgsqzg7s5.jpeg?q=90"
+        data-price="256"
+        data-old-price="1499"
+        data-discount="83"
+        data-rating="3.6"
+        data-reviews="106"
+        data-affiliate="https://fktr.in/f3ttW1G">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk174"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Mania Fashion Men Graphic Print Round Neck Cotton Blend Maroon T-Shirt"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/t-shirt/0/q/i/s-os-anime-maroon-s-tripbroz-original-imaheuawdz9vaqzh.jpeg?q=90"
+        data-price="245"
+        data-old-price="1999"
+        data-discount="88"
+        data-rating="4.1"
+        data-reviews="46"
+        data-affiliate="https://fktr.in/KvL26gM">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk175"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="RED TAPE Men Slides (Olive , 7)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/slipper-flip-flop/d/2/s/-watermarked-original-imahnhyaz3hnfkye.jpeg?q=90"
+        data-price="560"
+        data-old-price="3729"
+        data-discount="85"
+        data-rating="4"
+        data-reviews="3807"
+        data-affiliate="https://fktr.in/2IpVDrK">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk176"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="RED TAPE Men Slides (Red , 8)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/slipper-flip-flop/r/h/z/8-rds0714-red-tape-red-white-original-imahzgrgvgxfwguh.jpeg?q=90"
+        data-price="499"
+        data-old-price="2999"
+        data-discount="83"
+        data-rating="4.1"
+        data-reviews="4083"
+        data-affiliate="https://fktr.in/Jo8AiVg">
+    </div>
+
+
+
+
+
+
+    <div
+        class="product-data"
+        data-id="fk177"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="METRONAUT Regular Fit Men Grey Viscose Rayon Trousers"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/trouser/s/e/r/36-mettr-met-polofit-stlg-metronaut-original-imahgxttuzexnjkg.jpeg?q=90"
+        data-price="438"
+        data-old-price="2498"
+        data-discount="82"
+        data-rating="3.5"
+        data-reviews="540"
+        data-affiliate="https://fktr.in/dVOsCxG">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk178"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="STONEBERG Men Slim Fit Solid Spread Collar Formal Shirt"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/shirt/z/6/1/m-r-pista-green-stoneberg-original-imahhzqjy5maxfxb.jpeg?q=90"
+        data-price="416"
+        data-old-price="1599"
+        data-discount="74"
+        data-rating="4"
+        data-reviews="140957"
+        data-affiliate="https://fktr.in/nhbiU9Y">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk179"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="DISHANK CREATION Men Regular Fit Striped Button Down Collar Formal Shirt"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/shirt/6/q/w/m-fl-fl-2046-dishank-creation-original-imahhwcgyk7ybacr.jpeg?q=90"
+        data-price="344"
+        data-old-price="799"
+        data-discount="57"
+        data-rating="3.8"
+        data-reviews="1670"
+        data-affiliate="https://fktr.in/7ydmkaR">
+    </div>
+  
+    <div
+        class="product-data"
+        data-id="fk181"
+        data-platform="flipkart"
+        data-category="Beauty"
+        data-delivery="Free Delivery"
+        data-name="Joy Pure Neem | Ubtan | D-Tan | Vitamin C | Skin Brightening & Tan Removal  Face Wash (300 ml)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/face-wash/5/m/j/300-pure-neem-ubtan-d-tan-vitamin-c-skin-brightening-tan-removal-original-imahprntuxzyw9ur.jpeg?q=90"
+        data-price="254"
+        data-old-price="630"
+        data-discount="60"
+        data-rating="4.3"
+        data-reviews="5370"
+        data-affiliate="https://fktr.in/2wwjGVn">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk182"
+        data-platform="flipkart"
+        data-category="Home"
+        data-delivery="Free Delivery"
+        data-name="ELINOR NEW STEEL WATERBOTTLE IN GREEN COLOR WITH DORI CAP FOR ADULTS AND KIDS 1000 ml Steel Bottle (Pack of 1, Green)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/bottle/9/x/i/1000-new-steel-waterbottle-in-green-color-with-dori-cap-for-original-imahgejphebejuj6.jpeg?q=90"
+        data-price="253"
+        data-old-price="999"
+        data-discount="75"
+        data-rating="4.1"
+        data-reviews="18346"
+        data-affiliate="https://fktr.in/50FL60k">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk183"
+        data-platform="flipkart"
+        data-category="Home"
+        data-delivery="Free Delivery"
+        data-name="PLAMO 20 LITRE WATER COMBO NEWTONE 20000 ml PET Bottle (Pack of 1, Light Blue)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/bottle/n/9/x/20000-20-litre-water-combo-newtone-1-nt001-plamo-enriched-0-original-imaheya8ghcastxm.jpeg?q=90"
+        data-price="274"
+        data-old-price="999"
+        data-discount="73"
+        data-rating="4"
+        data-reviews="184"
+        data-affiliate="https://fktr.in/WRavd0m">
+    </div>
+<div
+        class="product-data"
+        data-id="fk184"
+        data-platform="flipkart"
+        data-category="Beauty"
+        data-delivery="Free Delivery"
+        data-name="BIOTIQUE Pineapple Oil Control Foaming Eliminates Excess Oil 100% Botanical Extracts Face Wash (150 ml)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/l1zc6fk0/face-wash/9/u/9/-original-imagdfhhvkjamrtf.jpeg?q=90"
+        data-price="139"
+        data-old-price="279"
+        data-discount="50"
+        data-rating="4.3"
+        data-reviews="15591"
+        data-affiliate="https://fktr.in/A4uNhvq">
+    </div>
+   <div
+        class="product-data"
+        data-id="fk185"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="berrylicious Women Chanderi Kurta Pant Dupatta Set"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/ethnic-set/e/p/c/xl-ps2366-berrylicious-original-imahrcfyrhe43zfq.jpeg?q=90"
+        data-price="1436"
+        data-old-price="5460"
+        data-discount="74"
+        data-rating="4.1"
+        data-reviews="43"
+        data-affiliate="https://fktr.in/6O0aj0r">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk186"
+        data-platform="flipkart"
+        data-category="Beauty"
+        data-delivery="Free Delivery"
+        data-name="NutriGlow Gold Kesar Facial Cleanser (Pack of 5) Face Wash (325)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/face-wash/l/s/k/325-gold-kesar-facial-cleanser-pack-of-5-nutriglow-original-imah38cbmu6wycaf.jpeg?q=90"
+        data-price="202"
+        data-old-price="600"
+        data-discount="66"
+        data-rating="4.2"
+        data-reviews="8337"
+        data-affiliate="https://fktr.in/Uq9stuR">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk187"
+        data-platform="flipkart"
+        data-category="home"
+        data-delivery="Free Delivery"
+        data-name="advik mart Clear Glass Infusion Bottle with Leak-Proof Cap – Detox Water & Healthy Drinks 750 ml Glass Bottle (Pack of 2, Clear)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/bottle/e/c/v/750-clear-glass-infusion-bottle-with-leak-proof-cap-detox-water-enriched-2-original-imahmczbj3rngghm.jpeg?q=90"
+        data-price="239"
+        data-old-price="999"
+        data-discount="76"
+        data-rating="4.3"
+        data-reviews="97"
+        data-affiliate="https://fktr.in/jethFAN">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk188"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="Flozio Wrist Watch Sport Watch with Red Strap & Water Resist G-90...more"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/watch/d/r/x/1-g835-s-shock-gba-800-8adr-red-flozio-boys-girls-resized-original-imahhaznyp5wzuej.jpeg?q=90"
+        data-price="240"
+        data-old-price="999"
+        data-discount="76"
+        data-rating="4"
+        data-reviews="4937"
+        data-affiliate="https://fktr.in/21zmJ8o">
+    </div>
+  <div
+        class="product-data"
+        data-id="fk189"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="SHUBHFLAX Men Regular Fit Printed Cut Away Collar Formal Shirt"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/shirt/q/l/h/xl-shirt-for-men-3282-selction-trdnz-original-imahmy3geukhztfu.jpeg?q=90"
+        data-price="373"
+        data-old-price="999"
+        data-discount="63"
+        data-rating="3.8"
+        data-reviews="14871"
+        data-affiliate="https://fktr.in/i76tEO9">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk190"
+        data-platform="flipkart"
+        data-category="Fashion"
+        data-delivery="Free Delivery"
+        data-name="FUBAR Men Slim Fit Black Viscose Rayon Trousers"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/trouser/q/j/l/28-kctr-psdo-frml-99-bk-fubar-original-imahfhhzyxeyd8zy.jpeg?q=90"
+        data-price="360"
+        data-old-price="1999"
+        data-discount="82"
+        data-rating="3.7"
+        data-reviews="2270"
+        data-affiliate="https://fktr.in/Xzc3Q6K">
+    </div>
+
+
+    <div
+        class="product-data"
+        data-id="fk191"
+        data-platform="flipkart"
+        data-category=" Grocery"
+        data-delivery="Free Delivery"
+        data-name="SENSODYNE Sensitive with soft rounded bristles| Soft Toothbrush (Pack of 3)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/toothbrush/l/j/f/-original-imagguzt3wztygbk.jpeg?q=90"
+        data-price="83"
+        data-old-price="130"
+        data-discount="36"
+        data-rating="4.4"
+        data-reviews="2144"
+        data-affiliate="https://fktr.in/8oMCsHZ">
+    </div>
+    <div
+        class="product-data"
+        data-id="fk192"
+        data-platform="flipkart"
+        data-category=" Grocery"
+        data-delivery="Free Delivery"
+        data-name="Colgate MaxFresh Spicy Fresh Menthol Red Gel Toothpaste (300 g)"
+        data-image="https://rukminim1.flixcart.com/image/1528/1528/xif0q/toothpaste/x/t/r/-original-imahhbahxc7zybgp.jpeg?q=90"
+        data-price="168"
+        data-old-price="280"
+        data-discount="40"
+        data-rating="4.3"
+        data-reviews="6166"
+        data-affiliate="https://fktr.in/3Uv8Bhd">
+    </div>
+   
+
+<script>
+
+
+/* =========================================================
+   AFFILIATE LINKS
+========================================================= */
+
+const affiliateLinks = {
+
+    flipkart:
+        "YOUR_FLIPKART_EARNKARO_LINK",
+
+};
+
+
+/* =========================================================
+   PLATFORM DATA
+========================================================= */
+
+const platformData = {
+
+    flipkart: {
+
+        name:"Flipkart",
+
+        label:"FLIPKART MARKETPLACE",
+
+        title:"Discover More.<br><span>Shop Smarter.</span>",
+
+        description:
+            "Explore selected products and offers through Easy Shop.",
+
+        slides:[
+
+            {
+                image:
+                "https://rukminim2.flixcart.com/fk-p-flap/3200/1560/image/73db75da78f2128b.png?q=60",
+
+                small:"FLIPKART MARKETPLACE",
+
+                title:
+                "Discover More.<br><span>Shop Smarter.</span>",
+
+                text:
+                "Explore selected products and offers through Easy Shop."
+            },
+
+            {
+                image:
+                "https://rukminim1.flixcart.com/fk-p-flap/2400/1706/image/362467fe736074c3.jpg?q=60",
+
+                small:"SELECTED PRODUCTS",
+
+                title:
+                "Explore Products.<br><span>Find Your Picks.</span>",
+
+                text:
+                "Browse electronics, fashion, home and more."
+            },
+
+            {
+                image:
+                "https://rukminim1.flixcart.com/fk-p-flap/3200/1560/image/e8c4786b6e7c1610.png?q=60",
+
+                small:"SHOPPING DISCOVERY",
+
+                title:
+                "Great Picks.<br><span>Easy Shopping.</span>",
+
+                text:
+                "Discover products through marketplace links."
+            }
+
+        ]
+
+    },
+
+
+    
+
+};
+
+
+/* =========================================================
+   PRODUCTS
+   =========================================================
+   PRODUCT DATA HTML SE AUTOMATICALLY READ HOGA.
+
+   FUTURE ME JS KO EDIT NAHI KARNA HAI.
+========================================================= */
+
+const products = Array.from(
+    document.querySelectorAll("#htmlProducts .product-data")
+).map((el,index)=>({
+
+    id:
+        el.dataset.id ||
+        `product-${index+1}`,
+
+    platform:
+        el.dataset.platform ||
+        "flipkart",
+
+    category:
+        el.dataset.category ||
+        "Electronics",
+
+    delivery:
+        el.dataset.delivery ||
+        "Free Delivery",
+
+    name:
+        el.dataset.name ||
+        "",
+
+    image:
+        el.dataset.image ||
+        "",
+
+    price:
+        Number(el.dataset.price) ||
+        0,
+
+    oldPrice:
+        Number(el.dataset.oldPrice) ||
+        0,
+
+    discount:
+        Number(el.dataset.discount) ||
+        0,
+
+    rating:
+        Number(el.dataset.rating) ||
+        0,
+
+    reviews:
+        Number(el.dataset.reviews) ||
+        0,
+
+    affiliate:
+        el.dataset.affiliate ||
+        ""
+
+}));
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentPlatform = "flipkart";
+
+let currentCategory = "All";
+
+let currentSlide = 0;
+
+let slideTimer = null;
+
+let searchTerm = "";
+
+let offersMode = false;
+
+let cart =
+    JSON.parse(
+        localStorage.getItem("easyShopCart") || "[]"
+    );
+
+
+/* =========================================================
+   PLATFORM SWITCH
+========================================================= */
+
+function switchPlatform(platform){
+
+    if(!platformData[platform]){
+        return;
+    }
+
+    currentPlatform = platform;
+
+    currentCategory = "All";
+
+    currentSlide = 0;
+
+    searchTerm = "";
+
+    const searchInput =
+        document.getElementById("searchInput");
+
+    if(searchInput){
+        searchInput.value = "";
+    }
+
+    document.body.setAttribute(
+        "data-platform",
+        platform
+    );
+
+    updatePlatformTabs();
+
+    renderSlider();
+
+    renderProducts();
+
+    updateOffer();
+
+    updateCategoryButtons();
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================================================
+   UPDATE PLATFORM TABS
+========================================================= */
+
+function updatePlatformTabs(){
+
+    document
+        .querySelectorAll(".platform-tab")
+        .forEach(tab=>{
+
+            tab.classList.remove("active");
+
+        });
+
+    const activeTab =
+        document.getElementById(
+            "tab-" + currentPlatform
+        );
+
+    if(activeTab){
+
+        activeTab.classList.add("active");
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE OFFER
+========================================================= */
+
+function updateOffer(){
+
+    const data =
+        platformData[currentPlatform];
+
+    const offerTitle =
+        document.getElementById("offerTitle");
+
+    const offerDescription =
+        document.getElementById("offerDescription");
+
+    if(!offerTitle || !offerDescription){
+        return;
+    }
+
+    offerTitle.textContent =
+        data.name + " Deals";
+
+    offerDescription.textContent =
+        "Explore selected discounted products from " +
+        data.name +
+        " through Easy Shop.";
+
+}
+
+
+/* =========================================================
+   SLIDER
+========================================================= */
+
+function renderSlider(){
+
+    const slider =
+        document.getElementById("slider");
+
+    const data =
+        platformData[currentPlatform];
+
+    slider.innerHTML = `
+
+        ${data.slides.map((slide,index)=>`
+
+            <div class="slide ${index===0 ? "active" : ""}">
+
+                <img
+                    src="${slide.image}"
+                    alt="${data.name} marketplace"
+                    loading="${index===0 ? "eager" : "lazy"}"
+                    onerror="this.style.display='none'">
+
+                <div class="slide-content">
+
+                    <span class="slide-label">
+                        ${slide.small}
+                    </span>
+
+                    <h1>
+                        ${slide.title}
+                    </h1>
+
+                    <p>
+                        ${slide.text}
+                    </p>
+
+                    <div class="hero-btns">
+
+                        <button
+                            class="hero-btn hero-primary"
+                            onclick="scrollToProducts()">
+
+                            Explore Products
+
+                        </button>
+
+                        <button
+                            class="hero-btn hero-secondary"
+                            onclick="scrollToOffers()">
+
+                            View Offers
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `).join("")}
+
+
+        <button
+            class="slider-arrow slider-prev"
+            onclick="previousSlide()">
+
+            ‹
+
+        </button>
+
+
+        <button
+            class="slider-arrow slider-next"
+            onclick="nextSlide()">
+
+            ›
+
+        </button>
+
+
+        <div class="slider-dots">
+
+            ${data.slides.map((_,index)=>`
+
+                <button
+                    class="slider-dot ${index===0 ? "active" : ""}"
+                    onclick="goToSlide(${index})">
+                </button>
+
+            `).join("")}
+
+        </div>
+
+    `;
+
+    startSlider();
+
+}
+
+
+/* =========================================================
+   SLIDER CONTROLS
+========================================================= */
+
+function startSlider(){
+
+    clearInterval(slideTimer);
+
+    slideTimer =
+        setInterval(()=>{
+            nextSlide();
+        },5000);
+
+}
+
+
+function updateSlides(){
+
+    const slides =
+        document.querySelectorAll(".slide");
+
+    const dots =
+        document.querySelectorAll(".slider-dot");
+
+    slides.forEach((slide,index)=>{
+
+        slide.classList.toggle(
+            "active",
+            index === currentSlide
+        );
+
+    });
+
+    dots.forEach((dot,index)=>{
+
+        dot.classList.toggle(
+            "active",
+            index === currentSlide
+        );
+
+    });
+
+}
+
+
+function nextSlide(){
+
+    const total =
+        platformData[currentPlatform].slides.length;
+
+    currentSlide =
+        (currentSlide + 1) % total;
+
+    updateSlides();
+
+}
+
+
+function previousSlide(){
+
+    const total =
+        platformData[currentPlatform].slides.length;
+
+    currentSlide =
+        (currentSlide - 1 + total) % total;
+
+    updateSlides();
+
+}
+
+
+function goToSlide(index){
+
+    currentSlide = index;
+
+    updateSlides();
+
+    startSlider();
+
+}
+
+
+/* =========================================================
+   PRODUCTS
+========================================================= */
+
+function getVisibleProducts(){
+
+    let list;
+
+    if(offersMode){
+
+        list =
+            products.filter(product=>product.platform === currentPlatform);
+
+        list.sort((a,b)=>b.discount-a.discount);
+
+        return list;
+
+    }
+
+    if(searchTerm.trim() !== ""){
+
+        const query =
+            searchTerm.toLowerCase().trim();
+
+        list =
+            products.filter(product=>{
+
+                if(!platformData[product.platform]){
+                    return false;
+                }
+
+                const searchableText = [
+
+                    product.name,
+
+                    product.category,
+
+                    product.platform,
+
+                    platformData[product.platform].name
+
+                ]
+                .join(" ")
+                .toLowerCase();
+
+                return searchableText.includes(query);
+
+            });
+
+    }
+
+    else{
+
+        list =
+            products.filter(product=>{
+
+                if(product.platform !== currentPlatform){
+                    return false;
+                }
+
+                if(
+                    currentCategory !== "All" &&
+                    product.category !== currentCategory
+                ){
+
+                    return false;
+
+                }
+
+                return true;
+
+            });
+
+    }
+
+    return applySort(list);
+
+}
+
+
+/* =========================================================
+   SORT
+========================================================= */
+
+function applySort(list){
+
+    const sort =
+        document.getElementById("sortSelect").value;
+
+    const sorted =
+        [...list];
+
+    if(sort === "low"){
+
+        sorted.sort(
+            (a,b)=>a.price-b.price
+        );
+
+    }
+
+    else if(sort === "high"){
+
+        sorted.sort(
+            (a,b)=>b.price-a.price
+        );
+
+    }
+
+    else if(sort === "rating"){
+
+        sorted.sort(
+            (a,b)=>b.rating-a.rating
+        );
+
+    }
+
+    else if(sort === "discount"){
+
+        sorted.sort(
+            (a,b)=>b.discount-a.discount
+        );
+
+    }
+
+    return sorted;
+
+}
+
+
+/* =========================================================
+   PRODUCT CARD
+========================================================= */
+
+function productCard(product){
+
+    const platformName =
+        platformData[product.platform].name;
+
+    const stars =
+        "★".repeat(
+            Math.max(
+                1,
+                Math.round(product.rating)
+            )
+        );
+
+    return `
+
+        <article class="product-card">
+
+            <div class="product-image">
+
+                <img
+                    src="${product.image}"
+                    alt="${escapeHTML(product.name)}"
+                    loading="lazy"
+                    onerror="this.style.display='none'">
+
+
+                <span class="discount-badge">
+
+                    ${product.discount}% OFF
+
+                </span>
+
+
+                <span
+                    class="source-badge ${product.platform}">
+
+                    ${platformName.toUpperCase()}
+
+                </span>
+
+
+                <button
+                    class="wishlist-btn"
+                    onclick="toggleWishlist(this)"
+                    title="Wishlist">
+
+                    ♡
+
+                </button>
+
+            </div>
+
+
+            <div class="product-info">
+
+                <div class="product-name">
+
+                    ${escapeHTML(product.name)}
+
+                </div>
+
+
+                <div class="rating-row">
+
+                    <span class="rating">
+
+                        ${product.rating} ★
+
+                    </span>
+
+
+                    <span class="rating-stars">
+
+                        ${stars}
+
+                    </span>
+
+
+                    <span class="review-count">
+
+                        (${product.reviews})
+
+                    </span>
+
+                </div>
+
+
+                <div class="price-row">
+
+                    <span class="new-price">
+
+                        ₹${product.price.toLocaleString("en-IN")}
+
+                    </span>
+
+
+                    <span class="old-price">
+
+                        ₹${product.oldPrice.toLocaleString("en-IN")}
+
+                    </span>
+
+
+                    <span class="discount-text">
+
+                        ${product.discount}% OFF
+
+                    </span>
+
+                </div>
+
+
+                <div class="delivery">
+
+                    ✓ ${product.delivery}
+
+                </div>
+
+
+                <div class="card-actions">
+
+                    <button
+                        class="add-cart-btn"
+                        onclick="addToCart('${product.id}')">
+
+                        🛒 Add to Cart
+
+                    </button>
+
+
+                    <button
+                        class="check-price-btn"
+                        onclick="openAffiliate('${product.id}')">
+
+                        <span class="price-icon">
+
+                            🛍
+
+                        </span>
+
+                        Check Price
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+
+/* =========================================================
+   RENDER PRODUCTS
+========================================================= */
+
+function renderProducts(){
+
+    const grid =
+        document.getElementById("productGrid");
+
+    const visible =
+        getVisibleProducts();
+
+    if(offersMode){
+
+        document.getElementById(
+            "productsTitle"
+        ).textContent =
+            "Maximum Offers";
+
+        document.getElementById(
+            "productsSubtitle"
+        ).textContent =
+            "Showing products with the highest discounts.";
+
+        document.getElementById(
+            "resultInfo"
+        ).innerHTML =
+            `Found <strong>${visible.length}</strong> maximum offer${visible.length !== 1 ? "s" : ""}.`;
+
+    }
+
+    else if(searchTerm.trim() !== ""){
+
+        document.getElementById(
+            "productsTitle"
+        ).textContent =
+            "Search Results";
+
+        document.getElementById(
+            "productsSubtitle"
+        ).textContent =
+            "Showing matching products from all marketplaces.";
+
+        document.getElementById(
+            "resultInfo"
+        ).innerHTML =
+            `Found <strong>${visible.length}</strong> matching product${visible.length !== 1 ? "s" : ""} across all marketplaces.`;
+
+    }
+
+    else{
+
+        const name =
+            platformData[currentPlatform].name;
+
+        document.getElementById(
+            "productsTitle"
+        ).textContent =
+            name + " Products";
+
+        document.getElementById(
+            "productsSubtitle"
+        ).textContent =
+            platformData[currentPlatform].description;
+
+        document.getElementById(
+            "resultInfo"
+        ).innerHTML =
+            `Showing <strong>${visible.length}</strong> products from ${name}.`;
+
+    }
+
+
+    if(!visible.length){
+
+        grid.innerHTML = `
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    🔎
+                </div>
+
+                <h3>
+                    No products found
+                </h3>
+
+                <p>
+                    Try another product name, category or marketplace.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    grid.innerHTML =
+        visible.map(productCard).join("");
+
+}
+
+
+/* =========================================================
+   CATEGORY
+========================================================= */
+
+function updateCategoryButtons(){
+
+    document
+        .querySelectorAll(".category-btn")
+        .forEach(button=>{
+
+            button.classList.toggle(
+                "active",
+                button.dataset.category === currentCategory
+            );
+
+        });
+
+}
+
+
+document
+    .querySelectorAll(".category-btn")
+    .forEach(button=>{
+
+        button.addEventListener(
+            "click",
+            ()=>{
+
+                currentCategory =
+                    button.dataset.category;
+
+                searchTerm = "";
+
+                document.getElementById(
+                    "searchInput"
+                ).value = "";
+
+                updateCategoryButtons();
+
+                renderProducts();
+
+            }
+        );
+
+    });
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+document
+    .getElementById("searchInput")
+    .addEventListener(
+        "input",
+        function(){
+
+            searchTerm =
+                this.value;
+
+            offersMode = false;
+
+            currentCategory = "All";
+
+            updateCategoryButtons();
+
+            renderProducts();
+
+            if(searchTerm.trim() !== ""){
+
+                document.getElementById("shop").scrollIntoView({
+                    behavior:"auto",
+                    block:"start"
+                });
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   SORT
+========================================================= */
+
+document
+    .getElementById("sortSelect")
+    .addEventListener(
+        "change",
+        ()=>{
+
+            renderProducts();
+
+        }
+    );
+
+
+/* =========================================================
+   AFFILIATE CLICK
+   Uses each product's own affiliate field
+========================================================= */
+
+function openAffiliate(id){
+
+    const product =
+        products.find(
+            item=>item.id === id
+        );
+
+    if(!product){
+        return;
+    }
+
+    const link =
+        product.affiliate;
+
+    if(
+        !link ||
+        link.includes("YOUR_")
+    ){
+
+        showToast(
+            "Please add the EarnKaro affiliate link for this product in the code."
+        );
+
+        return;
+
+    }
+
+    window.open(
+        link,
+        "_blank",
+        "noopener,noreferrer"
+    );
+
+}
+
+
+/* =========================================================
+   CART
+========================================================= */
+
+function saveCart(){
+
+    localStorage.setItem(
+        "easyShopCart",
+        JSON.stringify(cart)
+    );
+
+    updateCartCount();
+
+}
+
+
+function updateCartCount(){
+
+    document.getElementById(
+        "cartCount"
+    ).textContent =
+        cart.length;
+
+}
+
+
+function addToCart(id){
+
+    const product =
+        products.find(
+            item=>item.id === id
+        );
+
+    if(!product){
+        return;
+    }
+
+    const already =
+        cart.some(
+            item=>item.id === id
+        );
+
+    if(already){
+
+        showToast(
+            product.name +
+            " is already in your cart."
+        );
+
+        return;
+
+    }
+
+    cart.push(product);
+
+    saveCart();
+
+    showToast(
+        "✓ " +
+        product.name +
+        " added to cart."
+    );
+
+}
+
+
+function removeFromCart(id){
+
+    cart =
+        cart.filter(
+            item=>item.id !== id
+        );
+
+    saveCart();
+
+    renderCart();
+
+}
+
+
+function renderCart(){
+
+    const container =
+        document.getElementById("cartItems");
+
+    const totalElement =
+        document.getElementById("cartTotal");
+
+    if(!cart.length){
+
+        container.innerHTML = `
+
+            <div class="cart-empty">
+
+                <div class="cart-empty-icon">
+                    🛒
+                </div>
+
+                <h3>
+                    Your cart is empty
+                </h3>
+
+                <p>
+                    Add products from the marketplace sections.
+                </p>
+
+            </div>
+
+        `;
+
+        totalElement.textContent =
+            "₹0";
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        cart.map(item=>`
+
+            <div class="cart-item">
+
+                <img
+                    src="${item.image}"
+                    alt="${escapeHTML(item.name)}">
+
+
+                <div>
+
+                    <div class="cart-item-name">
+
+                        ${escapeHTML(item.name)}
+
+                    </div>
+
+
+                    <div class="cart-item-platform">
+
+                        ${platformData[item.platform].name.toUpperCase()}
+
+                    </div>
+
+
+                    <div class="cart-item-price">
+
+                        ₹${item.price.toLocaleString("en-IN")}
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="remove-item"
+                    onclick="removeFromCart('${item.id}')">
+
+                    ✕
+
+                </button>
+
+            </div>
+
+        `).join("");
+
+
+    const total =
+        cart.reduce(
+            (sum,item)=>sum + item.price,
+            0
+        );
+
+
+    totalElement.textContent =
+        "₹" +
+        total.toLocaleString("en-IN");
+
+}
+
+
+function openCart(){
+
+    renderCart();
+
+    document
+        .getElementById("cartDrawer")
+        .classList.add("open");
+
+    document
+        .getElementById("cartOverlay")
+        .classList.add("show");
+
+}
+
+
+function closeCart(){
+
+    document
+        .getElementById("cartDrawer")
+        .classList.remove("open");
+
+    document
+        .getElementById("cartOverlay")
+        .classList.remove("show");
+
+}
+
+
+function continueShopping(){
+
+    closeCart();
+
+    document
+        .getElementById("shop")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+function openLogin(){
+
+    document
+        .getElementById("loginModal")
+        .classList.add("show");
+
+    document.body.classList.add(
+        "modal-open"
+    );
+
+}
+
+
+function closeLogin(){
+
+    document
+        .getElementById("loginModal")
+        .classList.remove("show");
+
+    document.body.classList.remove(
+        "modal-open"
+    );
+
+}
+
+
+function closeLoginOutside(event){
+
+    if(event.target.id === "loginModal"){
+
+        closeLogin();
+
+    }
+
+}
+
+
+function submitLogin(event){
+
+    event.preventDefault();
+
+    showToast(
+        "Demo login submitted. Connect your backend to enable real accounts."
+    );
+
+    closeLogin();
+
+}
+
+
+/* =========================================================
+   WISHLIST
+========================================================= */
+
+function toggleWishlist(button){
+
+    const active =
+        button.dataset.active === "true";
+
+    if(active){
+
+        button.dataset.active = "false";
+
+        button.textContent = "♡";
+
+        showToast(
+            "Removed from wishlist."
+        );
+
+    }
+
+    else{
+
+        button.dataset.active = "true";
+
+        button.textContent = "♥";
+
+        showToast(
+            "Added to wishlist."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+function toggleMobileMenu(){
+
+    document
+        .getElementById("mobileNav")
+        .classList.toggle("show");
+
+}
+
+
+function closeMobileMenu(){
+
+    document
+        .getElementById("mobileNav")
+        .classList.remove("show");
+
+}
+
+
+/* =========================================================
+   MOBILE SEARCH
+========================================================= */
+
+function toggleMobileSearch(){
+
+    const box =
+        document.getElementById("searchBox");
+
+    box.classList.toggle(
+        "mobile-search"
+    );
+
+    if(
+        box.classList.contains(
+            "mobile-search"
+        )
+    ){
+
+        document
+            .getElementById("searchInput")
+            .focus();
+
+    }
+
+}
+
+
+/* =========================================================
+   SCROLL
+========================================================= */
+
+function scrollToProducts(){
+
+    document
+        .getElementById("shop")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+
+}
+
+
+function scrollToOffers(){
+
+    document
+        .getElementById("offers")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+
+}
+
+
+function openContact(event){
+
+    event.preventDefault();
+
+    document.getElementById("contact").scrollIntoView({
+        behavior:"auto",
+        block:"start"
+    });
+
+    history.pushState(null,"","#contact");
+
+}
+
+
+function showOffers(){
+
+    offersMode = true;
+
+    searchTerm = "";
+
+    currentCategory = "All";
+
+    document.getElementById("searchInput").value = "";
+
+    updateCategoryButtons();
+
+    renderProducts();
+
+    document.getElementById("shop").scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+let toastTimer;
+
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent =
+        message;
+
+    toast.classList.add("show");
+
+    clearTimeout(toastTimer);
+
+    toastTimer =
+        setTimeout(()=>{
+
+            toast.classList.remove("show");
+
+        },3000);
+
+}
+
+
+/* =========================================================
+   HTML ESCAPE
+========================================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================================
+   KEYBOARD
+========================================================= */
+
+document.addEventListener(
+    "click",
+    event=>{
+
+        const option =
+            event.target.closest("a,button,select");
+
+        if(!option){
+            return;
+        }
+
+        option.classList.remove("game-click");
+
+        void option.offsetWidth;
+
+        option.classList.add("game-click");
+
+        setTimeout(()=>{
+            option.classList.remove("game-click");
+        },450);
+
+    }
+);
+
+document.addEventListener(
+    "keydown",
+    event=>{
+
+        if(event.key === "Escape"){
+
+            closeCart();
+
+            closeLogin();
+
+            closeMobileMenu();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+document.getElementById("year").textContent =
+    new Date().getFullYear();
+
+renderSlider();
+
+renderProducts();
+
+updateOffer();
+
+updateCartCount();
+
+updateCategoryButtons();
+
+</script>
+
+</body>
+</html>
